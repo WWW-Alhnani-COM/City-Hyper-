@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سيتي هايبر - العروض</title>
+    <style>
+        :root {
+            --city-red: #e63946;
+            --hyper-black: #1a1a1a;
+            --bg-light: #f4f4f4;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg-light); }
+
+        /* الهيدر الصغير */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-section { display: flex; align-items: center; gap: 10px; }
+        .logo-img { width: 40px; height: 40px; object-fit: contain; }
+        .brand-name { font-size: 1.5rem; font-weight: bold; }
+        .city { color: var(--city-red); }
+        .hyper { color: var(--hyper-black); }
+
+        /* البنر الإعلاني */
+        .banner-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .banner-slide {
+            width: 100%;
+            height: 100%;
+            display: none;
+            object-fit: cover;
+        }
+
+        /* حقل البحث والتصنيفات */
+        .search-section { padding: 0 5%; margin-bottom: 20px; }
+        .search-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5%;
+            margin-bottom: 20px;
+        }
+
+        .view-options button {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        /* حاوية المنتجات */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 0 5% 40px;
+        }
+
+        /* نمط القائمة (List View) */
+        .list-view {
+            grid-template-columns: 1fr !important;
+        }
+
+        .product-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #eee;
+        }
+
+        .list-view .product-card {
+            display: flex;
+            align-items: center;
+            text-align: right;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo-section">
+            <img src="logo.png" alt="Logo" class="logo-img"> <div class="brand-name">
+                <span class="city">سيتي</span> <span class="hyper">هايبر</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="banner-container">
+        <img src="banner1.jpg" class="banner-slide" style="display:block"> <img src="banner2.jpg" class="banner-slide">
+        <img src="banner3.jpg" class="banner-slide">
+    </div>
+
+    <div class="search-section">
+        <input type="text" class="search-input" placeholder="ابحث عن عرض أو منتج...">
+    </div>
+
+    <div class="controls">
+        <div class="categories">
+            <select id="catFilter" style="padding: 8px; border-radius: 5px;">
+                <option value="all">كل الأقسام</option>
+                <option value="meat">اللحوم</option>
+                <option value="veg">الخضروات</option>
+            </select>
+        </div>
+        <div class="view-options">
+            <button onclick="changeView('grid')">🔲 شبكي</button>
+            <button onclick="changeView('list')">🗒️ قائمة</button>
+        </div>
+    </div>
+
+    <main class="products-grid" id="grid">
+        </main>
+
+    <script>
+        // 1. منطق البنر المتحرك
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        
+        function showSlides() {
+            slides.forEach(s => s.style.display = "none");
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].style.display = "block";
+            setTimeout(showSlides, 5000); // تغيير كل 5 ثوانٍ
+        }
+        showSlides();
+
+        // 2. تغيير طريقة العرض
+        function changeView(type) {
+            const grid = document.getElementById('grid');
+            if (type === 'list') {
+                grid.classList.add('list-view');
+            } else {
+                grid.classList.remove('list-view');
+            }
+        }
+    </script>
+</body>
+</html>
