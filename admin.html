@@ -104,6 +104,24 @@
             width: 100%; font-family: 'Cairo';
         }
 
+        /* تنسيق نظام الإشعارات */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            z-index: 2000;
+            transition: 0.5s;
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+        .toast.show { opacity: 1; transform: translateX(0); }
+        .toast.success { background-color: #2ecc71; }
+        .toast.error { background-color: #e63946; }
+
         @media (max-width: 768px) {
             body { flex-direction: column; }
             .sidebar {
@@ -118,6 +136,8 @@
     </style>
 </head>
 <body>
+
+    <div id="toast" class="toast"></div>
 
     <aside class="sidebar">
         <h2>سيتي آدمن ⚙️</h2>
@@ -178,10 +198,17 @@
     </main>
 
     <script>
-        // 1. إعدادات سوبابيس (بياناتك الخاصة)
         const supabaseUrl = 'https://lluxexpussqaigzqmdii.supabase.co';
         const supabaseKey = 'sb_publishable_Gp8P3aKK3I2zf3PppaiR4w_nknZVUyA';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // --- نظام الإشعارات ---
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.innerText = message;
+            toast.className = `toast show ${type}`;
+            setTimeout(() => { toast.className = 'toast'; }, 3000);
+        }
 
         // --- وظائف التنقل والمعاينة ---
         function showSection(id, btn) {
@@ -203,17 +230,15 @@
             }
         }
 
-        // --- وظائف الربط الفعلي مع سوبابيس ---
+        // --- وظائف الربط ---
 
-        // أ. رفع الصور للمخزن (Storage)
         async function uploadImage(file, bucketPath) {
             const fileName = `${Date.now()}_${file.name}`;
             const { data, error } = await _supabase.storage
-                .from('images') // يجب أن يكون اسم الـ Bucket هو images
+                .from('images')
                 .upload(`${bucketPath}/${fileName}`, file);
 
             if (error) throw error;
-
             const { data: { publicUrl } } = _supabase.storage
                 .from('images')
                 .getPublicUrl(`${bucketPath}/${fileName}`);
@@ -221,21 +246,20 @@
             return publicUrl;
         }
 
-        // ب. إضافة تصنيف
         async function saveCategory() {
             const name = document.getElementById('catName').value;
-            if (!name) return alert("يرجى إدخال اسم القسم");
+            if (!name) return showToast("يرجى إدخال اسم القسم", "error");
 
             const { error } = await _supabase.from('categories').insert([{ name }]);
-            if (error) alert("خطأ: " + error.message);
-            else {
-                alert("تمت إضافة القسم بنجاح! 🎉");
+            if (error) {
+                showToast("فشلت الإضافة: " + error.message, "error");
+            } else {
+                showToast("تمت إضافة القسم بنجاح! 🎉");
                 document.getElementById('catName').value = "";
                 loadCategories();
             }
         }
 
-        // ج. إضافة منتج
         async function saveProduct() {
             const name = document.getElementById('prodName').value;
             const catId = document.getElementById('dynamicCats').value;
@@ -243,7 +267,7 @@
             const newP = document.getElementById('newPrice').value;
             const file = document.getElementById('prodFile').files[0];
 
-            if (!name || !newP || !file || !catId) return alert("يرجى ملء كافة الحقول الأساسية");
+            if (!name || !newP || !file || !catId) return showToast("يرجى ملء كافة الحقول", "error");
 
             try {
                 const imageUrl = await uploadImage(file, 'products');
@@ -255,11 +279,12 @@
                     category_id: catId
                 }]);
                 if (error) throw error;
-                alert("تم نشر المنتج بنجاح! 🚀");
-            } catch (err) { alert("حدث خطأ أثناء الرفع: " + err.message); }
+                showToast("تم نشر المنتج بنجاح! 🚀");
+            } catch (err) { 
+                showToast("حدث خطأ: " + err.message, "error"); 
+            }
         }
 
-        // د. جلب التصنيفات لقائمة الاختيار
         async function loadCategories() {
             const { data, error } = await _supabase.from('categories').select('*');
             const select = document.getElementById('dynamicCats');
@@ -269,19 +294,19 @@
             }
         }
 
-        // هـ. حفظ البنر
         async function saveBanner() {
             const file = document.getElementById('bannerFile').files[0];
-            if (!file) return alert("يرجى اختيار صورة للبنر");
+            if (!file) return showToast("يرجى اختيار صورة", "error");
             try {
                 const imageUrl = await uploadImage(file, 'banners');
                 const { error } = await _supabase.from('banners').insert([{ image_url: imageUrl }]);
                 if (error) throw error;
-                alert("تم حفظ البنر بنجاح! ✅");
-            } catch (err) { alert(err.message); }
+                showToast("تم حفظ البنر بنجاح! ✅");
+            } catch (err) { 
+                showToast(err.message, "error"); 
+            }
         }
 
-        // تشغيل التحميل الأولي
         loadCategories();
     </script>
 </body>
