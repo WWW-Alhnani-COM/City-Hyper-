@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيتي هايبر - العروض</title>
+    <title>سيتي هايبر - العروض الحية</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
+        /* (نفس تنسيقات CSS السابقة التي أرسلتها مع إضافة بسيطة للبطاقات) */
         :root {
             --city-red: #e63946;
             --hyper-black: #1a1a1a;
@@ -15,201 +17,141 @@
             --white: #ffffff;
         }
 
-        /* تنسيق الجسم والخط */
-        body { 
-            font-family: 'Cairo', sans-serif; 
-            margin: 0; 
-            background: var(--bg-light); 
-            color: var(--hyper-black);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh; /* لجعل الفوتر يثبت في الأسفل إذا كانت الصفحة فارغة */
-        }
+        body { font-family: 'Cairo', sans-serif; margin: 0; background: var(--bg-light); display: flex; flex-direction: column; min-height: 100vh; }
 
         /* الهيدر */
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 5%;
-            background: var(--white);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .logo-section { display: flex; align-items: center; gap: 10px; }
-        .logo-img { width: 40px; height: 40px; object-fit: contain; }
+        .main-header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .brand-name { font-size: 1.5rem; font-weight: 900; }
         .city { color: var(--city-red); }
-        .hyper { color: var(--hyper-black); }
 
         /* البنر */
-        .banner-container {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 20px;
-        }
+        .banner-container { width: 100%; height: 250px; overflow: hidden; position: relative; margin-bottom: 20px; background: #ddd; }
         .banner-slide { width: 100%; height: 100%; display: none; object-fit: cover; }
 
-        /* البحث */
+        /* التصنيفات والبحث */
         .search-section { padding: 0 5%; margin-bottom: 20px; }
-        .search-input {
-            width: 100%;
-            padding: 12px 20px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.3s;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .search-input:focus { border-color: var(--city-red); box-shadow: 0 0 8px rgba(230, 57, 70, 0.2); }
-
-        /* التحكم والتصنيفات */
-        .controls { display: flex; flex-direction: column; gap: 15px; padding: 0 5%; margin-bottom: 20px; }
-        .categories-tags { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-        .categories-tags::-webkit-scrollbar { display: none; }
-
-        .tag-btn {
-            padding: 8px 18px;
-            background: var(--white);
-            border: 1px solid var(--city-red);
-            color: var(--city-red);
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 700;
-            font-family: 'Cairo', sans-serif;
-            white-space: nowrap;
-            transition: 0.3s;
-        }
+        .search-input { width: 100%; padding: 12px 20px; border: 2px solid #ddd; border-radius: 25px; outline: none; }
+        .categories-tags { display: flex; gap: 10px; overflow-x: auto; padding: 0 5% 10px; scrollbar-width: none; }
+        .tag-btn { padding: 8px 18px; background: var(--white); border: 1px solid var(--city-red); color: var(--city-red); border-radius: 20px; cursor: pointer; white-space: nowrap; }
         .tag-btn.active { background: var(--city-red); color: var(--white); }
 
-        .view-options { display: flex; gap: 10px; justify-content: flex-end; }
-        .view-btn {
-            background: var(--white);
-            border: 2px solid var(--city-red);
-            color: var(--city-red);
-            width: 45px;
-            height: 45px;
-            cursor: pointer;
-            border-radius: 12px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-        .view-btn.active { background: var(--city-red); color: var(--white); }
-
         /* شبكة المنتجات */
-        main { flex: 1; } /* لجعل المحتوى يأخذ المساحة المتبقية */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; padding: 0 5% 40px; }
-        .list-view { grid-template-columns: 1fr !important; }
-
-        /* تنسيق التذييل (Footer) */
-        .main-footer {
-            background-color: var(--city-red);
-            color: var(--white);
-            padding: 30px 5%;
-            text-align: center;
-            margin-top: auto; /* لدفعه للأسفل */
-        }
-        .footer-content h3 { margin: 0 0 10px; font-weight: 900; }
-        .footer-content p { margin: 5px 0; font-weight: 400; }
-        .footer-bottom {
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            margin-top: 20px;
-            padding-top: 10px;
-            font-size: 0.85rem;
-            font-weight: 400;
-        }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; padding: 0 5% 40px; }
+        .product-card { background: white; border-radius: 12px; padding: 10px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .product-card img { width: 100%; height: 150px; object-fit: contain; border-radius: 8px; }
+        .old-price { text-decoration: line-through; color: #888; font-size: 0.9rem; }
+        .new-price { color: var(--city-red); font-weight: 900; font-size: 1.2rem; display: block; }
+        
+        .main-footer { background-color: var(--city-red); color: var(--white); padding: 30px 5%; text-align: center; margin-top: auto; }
     </style>
 </head>
 <body>
 
     <header class="main-header">
-        <div class="logo-section">
-            <img src="logo.png" alt="Logo" class="logo-img">
-            <div class="brand-name">
-                <span class="city">سيتي</span> <span class="hyper">هايبر</span>
-            </div>
-        </div>
+        <div class="brand-name"><span class="city">سيتي</span> <span>هايبر</span></div>
     </header>
 
-    <div class="banner-container">
-        <img src="banner1.jpg" class="banner-slide" style="display:block">
-        <img src="banner2.jpg" class="banner-slide">
-        <img src="banner3.jpg" class="banner-slide">
-    </div>
+    <div class="banner-container" id="banner-wrapper">
+        </div>
 
     <div class="search-section">
-        <input type="text" class="search-input" placeholder="ابحث عن عرض أو منتج...">
+        <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن عرض..." oninput="searchProducts()">
     </div>
 
-    <div class="controls">
-        <div class="categories-tags">
-            <button class="tag-btn active" onclick="filterCat('all', this)">الكل</button>
-            <button class="tag-btn" onclick="filterCat('meat', this)">اللحوم 🥩</button>
-            <button class="tag-btn" onclick="filterCat('veg', this)">الخضروات 🍅</button>
-            <button class="tag-btn" onclick="filterCat('grocery', this)">بقالة 🧀</button>
+    <div class="categories-tags" id="catTags">
+        <button class="tag-btn active" onclick="filterByCat('all', this)">الكل</button>
         </div>
-        
-        <div class="view-options">
-            <button id="gridBtn" class="view-btn active" onclick="changeView('grid', this)">🔲</button>
-            <button id="listBtn" class="view-btn" onclick="changeView('list', this)">🗒️</button>
-        </div>
-    </div>
 
-    <main class="products-grid" id="grid">
+    <main class="products-grid" id="productsDisplay">
         </main>
 
     <footer class="main-footer">
-        <div class="footer-content">
-            <h3>سيتي هايبر</h3>
-            <p>أفضل العروض اليومية بين يديك</p>
-            <p> الفرع الرئيسي: صنعاء , شارع المطار , جوار سوق العاصمة </p>
-            <p>944 777 771 967+</p>
-        </div>
-        <div class="footer-bottom">
-            <p>جميع الحقوق محفوظة &copy; 2026 سيتي هايبر</p>
-        </div>
+        <p>جميع الحقوق محفوظة &copy; 2026 سيتي هايبر</p>
     </footer>
 
     <script>
-        // منطق البنر المتحرك
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.banner-slide');
-        
-        function showSlides() {
-            slides.forEach(s => s.style.display = "none");
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].style.display = "block";
-            setTimeout(showSlides, 5000);
-        }
-        showSlides();
+        // 1. إعداد الاتصال بمشروعك 🔗
+        const supabaseUrl = 'https://lluxexpussqaigzqmdii.supabase.co';
+        const supabaseKey = 'sb_publishable_Gp8P3aKK3I2zf3PppaiR4w_nknZVUyA';
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // تغيير طريقة العرض
-        function changeView(type, btn) {
-            const grid = document.getElementById('grid');
-            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        let allProducts = []; // مخزن للمنتجات لسهولة البحث والفلترة
 
-            if (type === 'list') {
-                grid.classList.add('list-view');
-            } else {
-                grid.classList.remove('list-view');
+        // 2. جلب البنرات 🖼️
+        async function loadBanners() {
+            const { data } = await _supabase.from('banners').select('*');
+            const wrapper = document.getElementById('banner-wrapper');
+            if (data && data.length > 0) {
+                wrapper.innerHTML = data.map((b, i) => 
+                    `<img src="${b.image_url}" class="banner-slide" style="display:${i===0?'block':'none'}">`
+                ).join('');
+                startBannerCycle();
             }
         }
 
-        // منطق أزرار التصنيفات
-        function filterCat(cat, btn) {
+        // 3. جلب التصنيفات 📂
+        async function loadCategories() {
+            const { data } = await _supabase.from('categories').select('*');
+            const container = document.getElementById('catTags');
+            if (data) {
+                data.forEach(cat => {
+                    container.innerHTML += `<button class="tag-btn" onclick="filterByCat('${cat.id}', this)">${cat.name}</button>`;
+                });
+            }
+        }
+
+        // 4. جلب المنتجات 🍎
+        async function loadProducts() {
+            const { data } = await _supabase.from('products').select('*');
+            if (data) {
+                allProducts = data;
+                displayProducts(allProducts);
+            }
+        }
+
+        function displayProducts(list) {
+            const grid = document.getElementById('productsDisplay');
+            grid.innerHTML = list.map(p => `
+                <div class="product-card">
+                    <img src="${p.image_url}" alt="${p.name}">
+                    <h4>${p.name}</h4>
+                    ${p.old_price ? `<span class="old-price">${p.old_price} ريال</span>` : ''}
+                    <span class="new-price">${p.new_price} ريال</span>
+                </div>
+            `).join('');
+        }
+
+        // 5. منطق الفلترة والبحث 🔍
+        function filterByCat(catId, btn) {
             document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            console.log("تم اختيار قسم: " + cat);
+            
+            const filtered = catId === 'all' ? allProducts : allProducts.filter(p => p.category_id == catId);
+            displayProducts(filtered);
         }
+
+        function searchProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
+            displayProducts(filtered);
+        }
+
+        // منطق حركة البنر
+        function startBannerCycle() {
+            let current = 0;
+            const slides = document.querySelectorAll('.banner-slide');
+            if(slides.length <= 1) return;
+            setInterval(() => {
+                slides[current].style.display = 'none';
+                current = (current + 1) % slides.length;
+                slides[current].style.display = 'block';
+            }, 5000);
+        }
+
+        // تشغيل كل شيء عند التحميل
+        loadBanners();
+        loadCategories();
+        loadProducts();
     </script>
 </body>
 </html>
-
