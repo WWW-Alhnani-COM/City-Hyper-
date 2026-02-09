@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سيتي هايبر - العروض</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
     <style>
         :root {
             --city-red: #e63946;
             --hyper-black: #1a1a1a;
             --bg-light: #f4f4f4;
+            --white: #ffffff;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg-light); }
+        /* تطبيق الخط على كامل الموقع */
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            margin: 0; 
+            background: var(--bg-light); 
+            color: var(--hyper-black);
+        }
 
         /* الهيدر الصغير */
         .main-header {
@@ -19,13 +29,15 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 5%;
-            background: white;
+            background: var(--white);
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .logo-section { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; object-fit: contain; }
-        .brand-name { font-size: 1.5rem; font-weight: bold; }
+        
+        /* تحسين اسم البراند بالخط العريض */
+        .brand-name { font-size: 1.5rem; font-weight: 900; }
         .city { color: var(--city-red); }
         .hyper { color: var(--hyper-black); }
 
@@ -44,30 +56,82 @@
             object-fit: cover;
         }
 
-        /* حقل البحث والتصنيفات */
+        /* تحسين حقل البحث */
         .search-section { padding: 0 5%; margin-bottom: 20px; }
         .search-input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
             font-size: 1rem;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.3s;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .search-input:focus {
+            border-color: var(--city-red);
+            box-shadow: 0 0 8px rgba(230, 57, 70, 0.2);
         }
 
+        /* التصنيفات وأزرار العرض */
         .controls {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 15px;
             padding: 0 5%;
             margin-bottom: 20px;
         }
 
-        .view-options button {
-            background: white;
-            border: 1px solid #ddd;
-            padding: 5px 10px;
+        .categories-tags {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 5px;
+            scrollbar-width: none;
+        }
+        .categories-tags::-webkit-scrollbar { display: none; }
+
+        .tag-btn {
+            padding: 8px 18px;
+            background: var(--white);
+            border: 1px solid var(--city-red);
+            color: var(--city-red);
+            border-radius: 20px;
             cursor: pointer;
-            border-radius: 5px;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            white-space: nowrap;
+            transition: 0.3s;
+        }
+        .tag-btn.active {
+            background: var(--city-red);
+            color: var(--white);
+        }
+
+        /* أزرار العرض أيقونات فقط باللون الأحمر */
+        .view-options {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        .view-btn {
+            background: var(--white);
+            border: 2px solid var(--city-red);
+            color: var(--city-red);
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            border-radius: 12px;
+            font-size: 1.5rem;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .view-btn.active {
+            background: var(--city-red);
+            color: var(--white);
         }
 
         /* حاوية المنتجات */
@@ -78,19 +142,16 @@
             padding: 0 5% 40px;
         }
 
-        /* نمط القائمة (List View) */
-        .list-view {
-            grid-template-columns: 1fr !important;
-        }
+        .list-view { grid-template-columns: 1fr !important; }
 
         .product-card {
-            background: white;
+            background: var(--white);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
             border: 1px solid #eee;
+            transition: 0.3s;
         }
-
         .list-view .product-card {
             display: flex;
             align-items: center;
@@ -103,7 +164,8 @@
 
     <header class="main-header">
         <div class="logo-section">
-            <img src="logo.png" alt="Logo" class="logo-img"> <div class="brand-name">
+            <img src="logo.png" alt="Logo" class="logo-img">
+            <div class="brand-name">
                 <span class="city">سيتي</span> <span class="hyper">هايبر</span>
             </div>
         </div>
@@ -120,16 +182,16 @@
     </div>
 
     <div class="controls">
-        <div class="categories">
-            <select id="catFilter" style="padding: 8px; border-radius: 5px;">
-                <option value="all">كل الأقسام</option>
-                <option value="meat">اللحوم</option>
-                <option value="veg">الخضروات</option>
-            </select>
+        <div class="categories-tags">
+            <button class="tag-btn active" onclick="filterCat('all', this)">الكل</button>
+            <button class="tag-btn" onclick="filterCat('meat', this)">اللحوم 🥩</button>
+            <button class="tag-btn" onclick="filterCat('veg', this)">الخضروات 🍅</button>
+            <button class="tag-btn" onclick="filterCat('grocery', this)">بقالة 🧀</button>
         </div>
+        
         <div class="view-options">
-            <button onclick="changeView('grid')">شبكي</button>
-            <button onclick="changeView('list')">قائمة</button>
+            <button id="gridBtn" class="view-btn active" onclick="changeView('grid', this)">🔲</button>
+            <button id="listBtn" class="view-btn" onclick="changeView('list', this)">🗒️</button>
         </div>
     </div>
 
@@ -145,18 +207,28 @@
             slides.forEach(s => s.style.display = "none");
             currentSlide = (currentSlide + 1) % slides.length;
             slides[currentSlide].style.display = "block";
-            setTimeout(showSlides, 5000); // تغيير كل 5 ثوانٍ
+            setTimeout(showSlides, 5000);
         }
         showSlides();
 
         // 2. تغيير طريقة العرض
-        function changeView(type) {
+        function changeView(type, btn) {
             const grid = document.getElementById('grid');
+            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
             if (type === 'list') {
                 grid.classList.add('list-view');
             } else {
                 grid.classList.remove('list-view');
             }
+        }
+
+        // 3. منطق أزرار التصنيفات
+        function filterCat(cat, btn) {
+            document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            console.log("تم اختيار قسم: " + cat);
         }
     </script>
 </body>
