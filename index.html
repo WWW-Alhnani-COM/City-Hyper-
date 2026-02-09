@@ -15,15 +15,18 @@
             --white: #ffffff;
         }
 
-        /* تطبيق الخط على كامل الموقع */
+        /* تنسيق الجسم والخط */
         body { 
             font-family: 'Cairo', sans-serif; 
             margin: 0; 
             background: var(--bg-light); 
             color: var(--hyper-black);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* لجعل الفوتر يثبت في الأسفل إذا كانت الصفحة فارغة */
         }
 
-        /* الهيدر الصغير */
+        /* الهيدر */
         .main-header {
             display: flex;
             justify-content: space-between;
@@ -35,13 +38,11 @@
 
         .logo-section { display: flex; align-items: center; gap: 10px; }
         .logo-img { width: 40px; height: 40px; object-fit: contain; }
-        
-        /* تحسين اسم البراند بالخط العريض */
         .brand-name { font-size: 1.5rem; font-weight: 900; }
         .city { color: var(--city-red); }
         .hyper { color: var(--hyper-black); }
 
-        /* البنر الإعلاني */
+        /* البنر */
         .banner-container {
             width: 100%;
             height: 200px;
@@ -49,14 +50,9 @@
             position: relative;
             margin-bottom: 20px;
         }
-        .banner-slide {
-            width: 100%;
-            height: 100%;
-            display: none;
-            object-fit: cover;
-        }
+        .banner-slide { width: 100%; height: 100%; display: none; object-fit: cover; }
 
-        /* تحسين حقل البحث */
+        /* البحث */
         .search-section { padding: 0 5%; margin-bottom: 20px; }
         .search-input {
             width: 100%;
@@ -69,27 +65,11 @@
             outline: none;
             box-sizing: border-box;
         }
-        .search-input:focus {
-            border-color: var(--city-red);
-            box-shadow: 0 0 8px rgba(230, 57, 70, 0.2);
-        }
+        .search-input:focus { border-color: var(--city-red); box-shadow: 0 0 8px rgba(230, 57, 70, 0.2); }
 
-        /* التصنيفات وأزرار العرض */
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            padding: 0 5%;
-            margin-bottom: 20px;
-        }
-
-        .categories-tags {
-            display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 5px;
-            scrollbar-width: none;
-        }
+        /* التحكم والتصنيفات */
+        .controls { display: flex; flex-direction: column; gap: 15px; padding: 0 5%; margin-bottom: 20px; }
+        .categories-tags { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
         .categories-tags::-webkit-scrollbar { display: none; }
 
         .tag-btn {
@@ -104,17 +84,9 @@
             white-space: nowrap;
             transition: 0.3s;
         }
-        .tag-btn.active {
-            background: var(--city-red);
-            color: var(--white);
-        }
+        .tag-btn.active { background: var(--city-red); color: var(--white); }
 
-        /* أزرار العرض أيقونات فقط باللون الأحمر */
-        .view-options {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
+        .view-options { display: flex; gap: 10px; justify-content: flex-end; }
         .view-btn {
             background: var(--white);
             border: 2px solid var(--city-red);
@@ -124,39 +96,34 @@
             cursor: pointer;
             border-radius: 12px;
             font-size: 1.5rem;
-            transition: 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .view-btn.active {
-            background: var(--city-red);
-            color: var(--white);
-        }
-
-        /* حاوية المنتجات */
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            padding: 0 5% 40px;
-        }
-
-        .list-view { grid-template-columns: 1fr !important; }
-
-        .product-card {
-            background: var(--white);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            border: 1px solid #eee;
             transition: 0.3s;
         }
-        .list-view .product-card {
-            display: flex;
-            align-items: center;
-            text-align: right;
-            gap: 20px;
+        .view-btn.active { background: var(--city-red); color: var(--white); }
+
+        /* شبكة المنتجات */
+        main { flex: 1; } /* لجعل المحتوى يأخذ المساحة المتبقية */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; padding: 0 5% 40px; }
+        .list-view { grid-template-columns: 1fr !important; }
+
+        /* تنسيق التذييل (Footer) */
+        .main-footer {
+            background-color: var(--city-red);
+            color: var(--white);
+            padding: 30px 5%;
+            text-align: center;
+            margin-top: auto; /* لدفعه للأسفل */
+        }
+        .footer-content h3 { margin: 0 0 10px; font-weight: 900; }
+        .footer-content p { margin: 5px 0; font-weight: 400; }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+            padding-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 400;
         }
     </style>
 </head>
@@ -198,8 +165,20 @@
     <main class="products-grid" id="grid">
         </main>
 
+    <footer class="main-footer">
+        <div class="footer-content">
+            <h3>سيتي هايبر</h3>
+            <p>أفضل العروض اليومية بين يديك</p>
+            <p> الفرع الرئيسي: صنعاء , شارع المطار , جوار سوق العاصمة </p>
+            <p>944 777 771 967+</p>
+        </div>
+        <div class="footer-bottom">
+            <p>جميع الحقوق محفوظة &copy; 2026 سيتي هايبر</p>
+        </div>
+    </footer>
+
     <script>
-        // 1. منطق البنر المتحرك
+        // منطق البنر المتحرك
         let currentSlide = 0;
         const slides = document.querySelectorAll('.banner-slide');
         
@@ -211,7 +190,7 @@
         }
         showSlides();
 
-        // 2. تغيير طريقة العرض
+        // تغيير طريقة العرض
         function changeView(type, btn) {
             const grid = document.getElementById('grid');
             document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
@@ -224,7 +203,7 @@
             }
         }
 
-        // 3. منطق أزرار التصنيفات
+        // منطق أزرار التصنيفات
         function filterCat(cat, btn) {
             document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -233,3 +212,4 @@
     </script>
 </body>
 </html>
+
