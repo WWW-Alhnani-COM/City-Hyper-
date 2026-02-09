@@ -19,10 +19,26 @@
         body {
             font-family: 'Cairo', sans-serif;
             margin: 0;
-            display: flex;
             background-color: var(--bg-light);
             min-height: 100vh;
         }
+
+        /* شاشة تسجيل الدخول */
+        #auth-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--hyper-black);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .login-box {
+            background: white; padding: 40px; border-radius: 15px;
+            width: 90%; max-width: 400px; text-align: center;
+        }
+        .login-box h2 { color: var(--city-red); margin-bottom: 20px; }
+
+        /* محتوى لوحة التحكم (مخفي قبل التسجيل) */
+        #admin-wrapper { display: none; }
 
         /* القائمة الجانبية */
         .sidebar {
@@ -64,7 +80,7 @@
         .main-content {
             margin-right: 260px;
             padding: 40px;
-            width: 100%;
+            width: calc(100% - 260px);
             box-sizing: border-box;
         }
 
@@ -104,7 +120,7 @@
             width: 100%; font-family: 'Cairo';
         }
 
-        /* تنسيق نظام الإشعارات */
+        /* نظام الإشعارات */
         .toast {
             position: fixed;
             top: 20px;
@@ -113,7 +129,7 @@
             border-radius: 8px;
             color: white;
             font-weight: bold;
-            z-index: 2000;
+            z-index: 10000;
             transition: 0.5s;
             opacity: 0;
             transform: translateX(-100%);
@@ -123,15 +139,12 @@
         .toast.error { background-color: #e63946; }
 
         @media (max-width: 768px) {
-            body { flex-direction: column; }
             .sidebar {
                 width: 100%; height: auto; position: relative;
-                padding: 10px 0; display: flex; flex-direction: row;
-                overflow-x: auto; white-space: nowrap;
+                display: flex; flex-direction: row; overflow-x: auto;
             }
+            .main-content { margin-right: 0; width: 100%; padding: 20px; }
             .sidebar h2 { display: none; }
-            .main-content { margin-right: 0; padding: 20px; }
-            .price-row { flex-direction: column; gap: 0; }
         }
     </style>
 </head>
@@ -139,70 +152,109 @@
 
     <div id="toast" class="toast"></div>
 
-    <aside class="sidebar">
-        <h2>سيتي آدمن ⚙️</h2>
-        <button class="nav-item active" onclick="showSection('banners', this)">🖼️ البنرات</button>
-        <button class="nav-item" onclick="showSection('categories', this)">📂 التصنيفات</button>
-        <button class="nav-item" onclick="showSection('products', this)">🍎 المنتجات</button>
-    </aside>
+    <div id="auth-overlay">
+        <div class="login-box">
+            <h2>سيتي هايبر - دخول الآدمن</h2>
+            <div class="form-group">
+                <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
+            </div>
+            <div class="form-group">
+                <input type="password" id="loginPass" placeholder="الرمز السري">
+            </div>
+            <button class="btn-submit" onclick="handleLogin()">دخول 🔓</button>
+        </div>
+    </div>
 
-    <main class="main-content">
-        <section id="banners" class="admin-section active">
-            <h3>إضافة بنر إعلاني 🖼️</h3>
-            <div class="form-group">
-                <label>اختر صورة البنر:</label>
-                <input type="file" id="bannerFile" accept="image/*" onchange="preview(this, 'p1')">
-                <img id="p1" class="preview-img">
-            </div>
-            <button class="btn-submit" onclick="saveBanner()">حفظ البنر ✅</button>
-        </section>
+    <div id="admin-wrapper" style="display: flex;">
+        <aside class="sidebar">
+            <h2>سيتي آدمن ⚙️</h2>
+            <button class="nav-item active" onclick="showSection('banners', this)">🖼️ البنرات</button>
+            <button class="nav-item" onclick="showSection('categories', this)">📂 التصنيفات</button>
+            <button class="nav-item" onclick="showSection('products', this)">🍎 المنتجات</button>
+            <button class="nav-item" style="color: #ff9999;" onclick="handleLogout()">تسجيل خروج 🚪</button>
+        </aside>
 
-        <section id="categories" class="admin-section">
-            <h3>إضافة تصنيف جديد 📂</h3>
-            <div class="form-group">
-                <label>اسم التصنيف:</label>
-                <input type="text" id="catName" placeholder="مثلاً: المنظفات">
-            </div>
-            <button class="btn-submit" onclick="saveCategory()">إضافة القسم</button>
-        </section>
-
-        <section id="products" class="admin-section">
-            <h3>إضافة منتج جديد 🍎</h3>
-            <div class="form-group">
-                <label>اسم المنتج:</label>
-                <input type="text" id="prodName" placeholder="مثلاً: زيت قلي">
-            </div>
-            <div class="form-group">
-                <label>القسم:</label>
-                <select id="dynamicCats">
-                    <option value="">جارٍ تحميل الأقسام...</option>
-                </select>
-            </div>
-            <div class="price-row">
+        <main class="main-content">
+            <section id="banners" class="admin-section active">
+                <h3>إضافة بنر إعلاني 🖼️</h3>
                 <div class="form-group">
-                    <label>السعر القديم:</label>
-                    <input type="number" id="oldPrice" placeholder="0.00">
+                    <input type="file" id="bannerFile" accept="image/*" onchange="preview(this, 'p1')">
+                    <img id="p1" class="preview-img">
+                </div>
+                <button class="btn-submit" onclick="saveBanner()">حفظ البنر ✅</button>
+            </section>
+
+            <section id="categories" class="admin-section">
+                <h3>إضافة تصنيف جديد 📂</h3>
+                <div class="form-group">
+                    <input type="text" id="catName" placeholder="اسم القسم">
+                </div>
+                <button class="btn-submit" onclick="saveCategory()">إضافة القسم</button>
+            </section>
+
+            <section id="products" class="admin-section">
+                <h3>إضافة منتج جديد 🍎</h3>
+                <div class="form-group">
+                    <input type="text" id="prodName" placeholder="اسم المنتج">
                 </div>
                 <div class="form-group">
-                    <label>السعر الجديد:</label>
-                    <input type="number" id="newPrice" placeholder="0.00">
+                    <select id="dynamicCats"><option value="">اختر القسم...</option></select>
                 </div>
-            </div>
-            <div class="form-group">
-                <label>صورة المنتج:</label>
-                <input type="file" id="prodFile" accept="image/*" onchange="preview(this, 'p2')">
-                <img id="p2" class="preview-img">
-            </div>
-            <button class="btn-submit" onclick="saveProduct()">نشر العرض 🚀</button>
-        </section>
-    </main>
+                <div class="price-row">
+                    <input type="number" id="oldPrice" placeholder="السعر القديم">
+                    <input type="number" id="newPrice" placeholder="السعر الجديد">
+                </div>
+                <div class="form-group">
+                    <input type="file" id="prodFile" accept="image/*" onchange="preview(this, 'p2')">
+                    <img id="p2" class="preview-img">
+                </div>
+                <button class="btn-submit" onclick="saveProduct()">نشر العرض 🚀</button>
+            </section>
+        </main>
+    </div>
 
     <script>
         const supabaseUrl = 'https://lluxexpussqaigzqmdii.supabase.co';
         const supabaseKey = 'sb_publishable_Gp8P3aKK3I2zf3PppaiR4w_nknZVUyA';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // --- نظام الإشعارات ---
+        // --- وظيفة تسجيل الدخول ---
+        async function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPass').value;
+
+            const { data, error } = await _supabase.auth.signInWithPassword({
+                email: email,
+                password: password,
+            });
+
+            if (error) {
+                showToast("خطأ في البيانات: " + error.message, "error");
+            } else {
+                showToast("تم الدخول بنجاح! 👋");
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('admin-wrapper').style.display = 'flex';
+                loadCategories();
+            }
+        }
+
+        async function handleLogout() {
+            await _supabase.auth.signOut();
+            window.location.reload();
+        }
+
+        // تفقد حالة الدخول عند فتح الصفحة
+        async function checkUser() {
+            const { data: { user } } = await _supabase.auth.getUser();
+            if (user) {
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('admin-wrapper').style.display = 'flex';
+                loadCategories();
+            }
+        }
+        checkUser();
+
+        // --- بقية وظائف الربط (نفس التي كانت لديك) ---
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.innerText = message;
@@ -210,7 +262,6 @@
             setTimeout(() => { toast.className = 'toast'; }, 3000);
         }
 
-        // --- وظائف التنقل والمعاينة ---
         function showSection(id, btn) {
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -222,92 +273,63 @@
             const img = document.getElementById(imgId);
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
-                reader.onload = (e) => { 
-                    img.src = e.target.result; 
-                    img.style.display = 'block'; 
-                };
+                reader.onload = (e) => { img.src = e.target.result; img.style.display = 'block'; };
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // --- وظائف الربط ---
-
         async function uploadImage(file, bucketPath) {
             const fileName = `${Date.now()}_${file.name}`;
-            const { data, error } = await _supabase.storage
-                .from('images')
-                .upload(`${bucketPath}/${fileName}`, file);
-
+            const { data, error } = await _supabase.storage.from('images').upload(`${bucketPath}/${fileName}`, file);
             if (error) throw error;
-            const { data: { publicUrl } } = _supabase.storage
-                .from('images')
-                .getPublicUrl(`${bucketPath}/${fileName}`);
-
+            const { data: { publicUrl } } = _supabase.storage.from('images').getPublicUrl(`${bucketPath}/${fileName}`);
             return publicUrl;
         }
 
         async function saveCategory() {
             const name = document.getElementById('catName').value;
             if (!name) return showToast("يرجى إدخال اسم القسم", "error");
-
             const { error } = await _supabase.from('categories').insert([{ name }]);
-            if (error) {
-                showToast("فشلت الإضافة: " + error.message, "error");
-            } else {
-                showToast("تمت إضافة القسم بنجاح! 🎉");
-                document.getElementById('catName').value = "";
-                loadCategories();
+            if (error) showToast(error.message, "error");
+            else { showToast("تم الحفظ! ✅"); loadCategories(); }
+        }
+
+        async function loadCategories() {
+            const { data } = await _supabase.from('categories').select('*');
+            if (data) {
+                const select = document.getElementById('dynamicCats');
+                select.innerHTML = '<option value="">اختر القسم...</option>';
+                data.forEach(c => { select.innerHTML += `<option value="${c.id}">${c.name}</option>`; });
             }
         }
 
         async function saveProduct() {
             const name = document.getElementById('prodName').value;
             const catId = document.getElementById('dynamicCats').value;
-            const oldP = document.getElementById('oldPrice').value;
             const newP = document.getElementById('newPrice').value;
             const file = document.getElementById('prodFile').files[0];
-
-            if (!name || !newP || !file || !catId) return showToast("يرجى ملء كافة الحقول", "error");
-
+            if (!name || !newP || !file || !catId) return showToast("أكمل البيانات!", "error");
             try {
                 const imageUrl = await uploadImage(file, 'products');
                 const { error } = await _supabase.from('products').insert([{
-                    name,
-                    old_price: oldP || null,
-                    new_price: newP,
-                    image_url: imageUrl,
-                    category_id: catId
+                    name, old_price: document.getElementById('oldPrice').value || null,
+                    new_price: newP, image_url: imageUrl, category_id: catId
                 }]);
                 if (error) throw error;
-                showToast("تم نشر المنتج بنجاح! 🚀");
-            } catch (err) { 
-                showToast("حدث خطأ: " + err.message, "error"); 
-            }
-        }
-
-        async function loadCategories() {
-            const { data, error } = await _supabase.from('categories').select('*');
-            const select = document.getElementById('dynamicCats');
-            if (data) {
-                select.innerHTML = '<option value="">اختر القسم...</option>';
-                data.forEach(c => { select.innerHTML += `<option value="${c.id}">${c.name}</option>`; });
-            }
+                showToast("تم النشر! 🚀");
+            } catch (err) { showToast(err.message, "error"); }
         }
 
         async function saveBanner() {
             const file = document.getElementById('bannerFile').files[0];
-            if (!file) return showToast("يرجى اختيار صورة", "error");
+            if (!file) return showToast("اختر صورة!", "error");
             try {
                 const imageUrl = await uploadImage(file, 'banners');
                 const { error } = await _supabase.from('banners').insert([{ image_url: imageUrl }]);
                 if (error) throw error;
-                showToast("تم حفظ البنر بنجاح! ✅");
-            } catch (err) { 
-                showToast(err.message, "error"); 
-            }
+                showToast("تم الحفظ! ✅");
+            } catch (err) { showToast(err.message, "error"); }
         }
-
-        loadCategories();
     </script>
 </body>
 </html>
