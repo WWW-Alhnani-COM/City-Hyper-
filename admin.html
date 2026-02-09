@@ -34,10 +34,11 @@
         .login-box {
             background: white; padding: 40px; border-radius: 15px;
             width: 90%; max-width: 400px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .login-box h2 { color: var(--city-red); margin-bottom: 20px; }
+        .login-box h2 { color: var(--city-red); margin-bottom: 20px; font-weight: 900; }
 
-        /* محتوى لوحة التحكم (مخفي قبل التسجيل) */
+        /* غلاف لوحة التحكم (مخفي افتراضياً) */
         #admin-wrapper { display: none; }
 
         /* القائمة الجانبية */
@@ -120,6 +121,11 @@
             width: 100%; font-family: 'Cairo';
         }
 
+        .btn-logout {
+            margin-top: 20px;
+            color: #ff9999;
+        }
+
         /* نظام الإشعارات */
         .toast {
             position: fixed;
@@ -154,30 +160,32 @@
 
     <div id="auth-overlay">
         <div class="login-box">
-            <h2>سيتي هايبر - دخول الآدمن</h2>
+            <h2>سيتي هايبر 🔐</h2>
+            <p>لوحة التحكم الإدارية</p>
             <div class="form-group">
                 <input type="email" id="loginEmail" placeholder="البريد الإلكتروني">
             </div>
             <div class="form-group">
                 <input type="password" id="loginPass" placeholder="الرمز السري">
             </div>
-            <button class="btn-submit" onclick="handleLogin()">دخول 🔓</button>
+            <button class="btn-submit" id="loginBtn" onclick="handleLogin()">دخول 🔓</button>
         </div>
     </div>
 
-    <div id="admin-wrapper" style="display: flex;">
+    <div id="admin-wrapper">
         <aside class="sidebar">
             <h2>سيتي آدمن ⚙️</h2>
             <button class="nav-item active" onclick="showSection('banners', this)">🖼️ البنرات</button>
             <button class="nav-item" onclick="showSection('categories', this)">📂 التصنيفات</button>
             <button class="nav-item" onclick="showSection('products', this)">🍎 المنتجات</button>
-            <button class="nav-item" style="color: #ff9999;" onclick="handleLogout()">تسجيل خروج 🚪</button>
+            <button class="nav-item btn-logout" onclick="handleLogout()">تسجيل خروج 🚪</button>
         </aside>
 
         <main class="main-content">
             <section id="banners" class="admin-section active">
                 <h3>إضافة بنر إعلاني 🖼️</h3>
                 <div class="form-group">
+                    <label>صورة البنر:</label>
                     <input type="file" id="bannerFile" accept="image/*" onchange="preview(this, 'p1')">
                     <img id="p1" class="preview-img">
                 </div>
@@ -187,7 +195,8 @@
             <section id="categories" class="admin-section">
                 <h3>إضافة تصنيف جديد 📂</h3>
                 <div class="form-group">
-                    <input type="text" id="catName" placeholder="اسم القسم">
+                    <label>اسم القسم:</label>
+                    <input type="text" id="catName" placeholder="مثلاً: المنظفات">
                 </div>
                 <button class="btn-submit" onclick="saveCategory()">إضافة القسم</button>
             </section>
@@ -195,16 +204,25 @@
             <section id="products" class="admin-section">
                 <h3>إضافة منتج جديد 🍎</h3>
                 <div class="form-group">
-                    <input type="text" id="prodName" placeholder="اسم المنتج">
+                    <label>اسم المنتج:</label>
+                    <input type="text" id="prodName" placeholder="مثلاً: زيت قلي">
                 </div>
                 <div class="form-group">
+                    <label>القسم:</label>
                     <select id="dynamicCats"><option value="">اختر القسم...</option></select>
                 </div>
                 <div class="price-row">
-                    <input type="number" id="oldPrice" placeholder="السعر القديم">
-                    <input type="number" id="newPrice" placeholder="السعر الجديد">
+                    <div class="form-group">
+                        <label>السعر القديم:</label>
+                        <input type="number" id="oldPrice" placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label>السعر الجديد:</label>
+                        <input type="number" id="newPrice" placeholder="0.00">
+                    </div>
                 </div>
                 <div class="form-group">
+                    <label>صورة المنتج:</label>
                     <input type="file" id="prodFile" accept="image/*" onchange="preview(this, 'p2')">
                     <img id="p2" class="preview-img">
                 </div>
@@ -214,27 +232,45 @@
     </div>
 
     <script>
+        // بيانات الربط المصححة
         const supabaseUrl = 'https://lluxexpussqaigzqmdii.supabase.co';
-        const supabaseKey = 'sb_publishable_Gp8P3aKK3I2zf3PppaiR4w_nknZVUyA';
-        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsdXhleHB1c3NxYWlnenFtZGlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NzM0MjAsImV4cCI6MjA4NjE0OTQyMH0.9VWGHgKe-wJUadDhzvMpSxlg3sjTcnqXGfglOfnC-vw';
+
+        const _supabase = supabase.createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true
+            }
+        });
 
         // --- وظيفة تسجيل الدخول ---
         async function handleLogin() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPass').value;
+            const btn = document.getElementById('loginBtn');
 
-            const { data, error } = await _supabase.auth.signInWithPassword({
-                email: email,
-                password: password,
-            });
+            if(!email || !password) return showToast("يرجى إدخال البيانات", "error");
 
-            if (error) {
-                showToast("خطأ في البيانات: " + error.message, "error");
-            } else {
+            btn.disabled = true;
+            btn.innerText = "جاري التحقق...";
+
+            try {
+                const { data, error } = await _supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                });
+
+                if (error) throw error;
+
                 showToast("تم الدخول بنجاح! 👋");
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('admin-wrapper').style.display = 'flex';
                 loadCategories();
+            } catch (error) {
+                showToast("خطأ: " + error.message, "error");
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "دخول 🔓";
             }
         }
 
@@ -245,8 +281,8 @@
 
         // تفقد حالة الدخول عند فتح الصفحة
         async function checkUser() {
-            const { data: { user } } = await _supabase.auth.getUser();
-            if (user) {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
                 document.getElementById('auth-overlay').style.display = 'none';
                 document.getElementById('admin-wrapper').style.display = 'flex';
                 loadCategories();
@@ -254,7 +290,7 @@
         }
         checkUser();
 
-        // --- بقية وظائف الربط (نفس التي كانت لديك) ---
+        // --- وظائف المساعدة ---
         function showToast(message, type = 'success') {
             const toast = document.getElementById('toast');
             toast.innerText = message;
@@ -286,12 +322,13 @@
             return publicUrl;
         }
 
+        // --- وظائف الإرسال لقاعدة البيانات ---
         async function saveCategory() {
             const name = document.getElementById('catName').value;
             if (!name) return showToast("يرجى إدخال اسم القسم", "error");
             const { error } = await _supabase.from('categories').insert([{ name }]);
-            if (error) showToast(error.message, "error");
-            else { showToast("تم الحفظ! ✅"); loadCategories(); }
+            if (error) showToast("حدث خطأ: " + error.message, "error");
+            else { showToast("تمت إضافة القسم بنجاح! ✅"); document.getElementById('catName').value = ""; loadCategories(); }
         }
 
         async function loadCategories() {
@@ -308,7 +345,9 @@
             const catId = document.getElementById('dynamicCats').value;
             const newP = document.getElementById('newPrice').value;
             const file = document.getElementById('prodFile').files[0];
-            if (!name || !newP || !file || !catId) return showToast("أكمل البيانات!", "error");
+
+            if (!name || !newP || !file || !catId) return showToast("أكمل كافة البيانات!", "error");
+
             try {
                 const imageUrl = await uploadImage(file, 'products');
                 const { error } = await _supabase.from('products').insert([{
@@ -316,18 +355,23 @@
                     new_price: newP, image_url: imageUrl, category_id: catId
                 }]);
                 if (error) throw error;
-                showToast("تم النشر! 🚀");
+                showToast("تم نشر المنتج بنجاح! 🚀");
+                // مسح الحقول بعد النجاح
+                document.getElementById('prodName').value = "";
+                document.getElementById('newPrice').value = "";
+                document.getElementById('p2').style.display = 'none';
             } catch (err) { showToast(err.message, "error"); }
         }
 
         async function saveBanner() {
             const file = document.getElementById('bannerFile').files[0];
-            if (!file) return showToast("اختر صورة!", "error");
+            if (!file) return showToast("يرجى اختيار صورة أولاً!", "error");
             try {
                 const imageUrl = await uploadImage(file, 'banners');
                 const { error } = await _supabase.from('banners').insert([{ image_url: imageUrl }]);
                 if (error) throw error;
-                showToast("تم الحفظ! ✅");
+                showToast("تم حفظ البنر بنجاح! ✅");
+                document.getElementById('p1').style.display = 'none';
             } catch (err) { showToast(err.message, "error"); }
         }
     </script>
