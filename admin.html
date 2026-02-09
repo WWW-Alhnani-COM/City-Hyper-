@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة تحكم سيتي هايبر</title>
+    <title>لوحة تحكم سيتي هايبر - Supabase</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -24,7 +24,7 @@
             min-height: 100vh;
         }
 
-        /* القائمة الجانبية - Sidebar */
+        /* القائمة الجانبية */
         .sidebar {
             width: 260px;
             background-color: var(--hyper-black);
@@ -150,12 +150,12 @@
             <h3>إضافة منتج جديد 🍎</h3>
             <div class="form-group">
                 <label>اسم المنتج:</label>
-                <input type="text" id="prodName" placeholder="مثلاً: زيت قلي 1 لتر">
+                <input type="text" id="prodName" placeholder="مثلاً: زيت قلي">
             </div>
             <div class="form-group">
                 <label>القسم:</label>
                 <select id="dynamicCats">
-                    <option value="">اختر القسم...</option>
+                    <option value="">جارٍ تحميل الأقسام...</option>
                 </select>
             </div>
             <div class="price-row">
@@ -178,12 +178,12 @@
     </main>
 
     <script>
-        // --- إعدادات سوبابيس (ضع بياناتك هنا) ---
-        const supabaseUrl = 'رابط_مشروعك_هنا';
-        const supabaseKey = 'مفتاح_API_الخاص_بك';
+        // 1. إعدادات سوبابيس (بياناتك الخاصة)
+        const supabaseUrl = 'https://lluxexpussqaigzqmdii.supabase.co';
+        const supabaseKey = 'sb_publishable_Gp8P3aKK3I2zf3PppaiR4w_nknZVUyA';
         const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // --- وظائف الواجهة ---
+        // --- وظائف التنقل والمعاينة ---
         function showSection(id, btn) {
             document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -203,39 +203,39 @@
             }
         }
 
-        // --- وظائف الربط البرمجي ---
+        // --- وظائف الربط الفعلي مع سوبابيس ---
 
-        // 1. رفع الصورة إلى Storage ☁️
-        async function uploadImage(file, bucket) {
+        // أ. رفع الصور للمخزن (Storage)
+        async function uploadImage(file, bucketPath) {
             const fileName = `${Date.now()}_${file.name}`;
             const { data, error } = await _supabase.storage
-                .from('images') // تأكد أن اسم الباكت في سوبابيس هو images
-                .upload(`${bucket}/${fileName}`, file);
+                .from('images') // يجب أن يكون اسم الـ Bucket هو images
+                .upload(`${bucketPath}/${fileName}`, file);
 
             if (error) throw error;
 
             const { data: { publicUrl } } = _supabase.storage
                 .from('images')
-                .getPublicUrl(`${bucket}/${fileName}`);
+                .getPublicUrl(`${bucketPath}/${fileName}`);
 
             return publicUrl;
         }
 
-        // 2. إضافة تصنيف 📂
+        // ب. إضافة تصنيف
         async function saveCategory() {
             const name = document.getElementById('catName').value;
-            if (!name) return alert("يرجى كتابة الاسم");
+            if (!name) return alert("يرجى إدخال اسم القسم");
 
             const { error } = await _supabase.from('categories').insert([{ name }]);
-            if (error) alert(error.message);
+            if (error) alert("خطأ: " + error.message);
             else {
-                alert("تم الإضافة! 🎉");
+                alert("تمت إضافة القسم بنجاح! 🎉");
                 document.getElementById('catName').value = "";
                 loadCategories();
             }
         }
 
-        // 3. إضافة منتج 🍎
+        // ج. إضافة منتج
         async function saveProduct() {
             const name = document.getElementById('prodName').value;
             const catId = document.getElementById('dynamicCats').value;
@@ -243,7 +243,7 @@
             const newP = document.getElementById('newPrice').value;
             const file = document.getElementById('prodFile').files[0];
 
-            if (!name || !newP || !file || !catId) return alert("يرجى إكمال البيانات");
+            if (!name || !newP || !file || !catId) return alert("يرجى ملء كافة الحقول الأساسية");
 
             try {
                 const imageUrl = await uploadImage(file, 'products');
@@ -255,13 +255,13 @@
                     category_id: catId
                 }]);
                 if (error) throw error;
-                alert("تم النشر! 🚀");
-            } catch (err) { alert(err.message); }
+                alert("تم نشر المنتج بنجاح! 🚀");
+            } catch (err) { alert("حدث خطأ أثناء الرفع: " + err.message); }
         }
 
-        // 4. جلب الأقسام 📥
+        // د. جلب التصنيفات لقائمة الاختيار
         async function loadCategories() {
-            const { data } = await _supabase.from('categories').select('*');
+            const { data, error } = await _supabase.from('categories').select('*');
             const select = document.getElementById('dynamicCats');
             if (data) {
                 select.innerHTML = '<option value="">اختر القسم...</option>';
@@ -269,7 +269,21 @@
             }
         }
 
+        // هـ. حفظ البنر
+        async function saveBanner() {
+            const file = document.getElementById('bannerFile').files[0];
+            if (!file) return alert("يرجى اختيار صورة للبنر");
+            try {
+                const imageUrl = await uploadImage(file, 'banners');
+                const { error } = await _supabase.from('banners').insert([{ image_url: imageUrl }]);
+                if (error) throw error;
+                alert("تم حفظ البنر بنجاح! ✅");
+            } catch (err) { alert(err.message); }
+        }
+
+        // تشغيل التحميل الأولي
         loadCategories();
     </script>
 </body>
 </html>
+
