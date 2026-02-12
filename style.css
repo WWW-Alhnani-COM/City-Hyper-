@@ -1,118 +1,142 @@
-:root {
+root {
     --city-red: #e63946;
-    --white: #ffffff;
+    --hyper-black: #1a1a1a;
     --bg-light: #f8f9fa;
-    --radius-main: 25px;
+    --white: #ffffff;
+    --shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-body {
-    font-family: 'Cairo', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--bg-light);
-    direction: rtl;
+* { box-sizing: border-box; }
+
+body { 
+    font-family: 'Cairo', sans-serif; 
+    margin: 0; 
+    background: var(--bg-light); 
+    color: var(--hyper-black);
+    line-height: 1.6;
 }
 
-/* 1. الهيدر: خلفية مستديرة ومنحنية */
+/* الهيدر */
 .main-header {
-    background-color: var(--city-red);
-    padding: 30px 5% 70px 5%; /* مساحة كافية خلف البحث */
-    border-bottom-left-radius: 40px;
-    border-bottom-right-radius: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 15px 5%;
+    background: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
-.brand-name { color: white; font-weight: 900; font-size: 1.6rem; }
 
-/* 2. حقل البحث: أيقونة وحواف دائرية وتداخل صحيح */
-.controls-wrapper {
-    padding: 0 7%;
-    margin-top: -30px; /* التداخل فوق الهيدر */
+.logo-section { display: flex; align-items: center; gap: 12px; }
+.logo-img { width: 45px; height: 45px; object-fit: contain; }
+.brand-name { font-size: 1.6rem; font-weight: 900; }
+.city { color: var(--city-red); }
+
+/* البنرات */
+.banner-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
     position: relative;
-    z-index: 100;
+    background: #ddd;
+}
+.banner-slide { 
+    width: 100%; 
+    height: 100%; 
+    display: none; 
+    object-fit: cover;
+    animation: fadeIn 0.8s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0.5; } to { opacity: 1; } }
+
+/* قسم البحث والتحكم */
+.controls-wrapper {
+    padding: 20px 5%;
+    background: var(--white);
+    margin-bottom: 20px;
 }
 
 .search-input {
     width: 100%;
-    padding: 15px 45px 15px 20px;
+    padding: 14px 25px;
+    border: 2px solid #eee;
     border-radius: 50px;
-    border: none;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    font-size: 1rem;
     font-family: 'Cairo';
+    transition: 0.3s;
     outline: none;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
-    background-repeat: no-repeat;
-    background-position: right 20px center;
+    margin-bottom: 20px;
 }
+.search-input:focus { border-color: var(--city-red); }
 
-/* 3. البنر الأساسي: حواف دائرية ومسافات وتمرير يدوي */
-.banner-container {
-    margin: 20px 15px; /* مسافات من جميع الجهات */
-    height: 180px;
-    border-radius: var(--radius-main);
-    display: flex;
-    overflow-x: auto; /* تمرير يدوي */
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    background-color: #eee;
-}
-.banner-container::-webkit-scrollbar { display: none; }
-
-.banner-slide {
-    min-width: 100%;
-    height: 100%;
-    scroll-snap-align: start;
-    border-radius: var(--radius-main);
-    object-fit: cover;
-    transition: opacity 0.6s ease-in-out; /* تلاشي ناعم */
-}
-
-/* 4. البنرات الصغرى (نظام النصف يظهر) */
-/* نطبق هذا على أي قسم صور إضافي تحت البنر الأساسي */
-.sub-banners {
-    display: flex;
-    gap: 15px;
-    padding: 0 15px 20px 15px;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-.sub-banners img {
-    min-width: 75%; /* يظهر جزء من البنر التالي */
-    height: 120px;
-    border-radius: 20px;
-    object-fit: cover;
-}
-
-/* 5. التصنيفات تحت البنر */
 .categories-tags {
-    padding: 10px 15px;
     display: flex;
-    gap: 10px;
+    gap: 12px;
     overflow-x: auto;
+    padding-bottom: 10px;
     scrollbar-width: none;
 }
+.categories-tags::-webkit-scrollbar { display: none; }
+
 .tag-btn {
-    padding: 10px 25px;
-    background: white;
+    padding: 8px 22px;
+    background: #f0f0f0;
     border: none;
+    color: #555;
     border-radius: 50px;
-    font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    cursor: pointer;
+    font-weight: 600;
     white-space: nowrap;
+    transition: 0.3s;
 }
 .tag-btn.active { background: var(--city-red); color: white; }
 
-/* 6. شبكة المنتجات (عمودين متناسقين) */
-.products-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-    padding: 10px 15px 40px;
+/* شبكة المنتجات */
+.products-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
+    gap: 20px; 
+    padding: 0 5% 40px; 
 }
+
 .product-card {
-    background: white;
-    border-radius: 25px;
-    padding: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    background: var(--white);
+    border-radius: 18px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s;
+    border: 1px solid #f0f0f0;
 }
+.product-card:hover { transform: translateY(-5px); }
+
+.product-card img { 
+    width: 100%; 
+    height: 160px; 
+    object-fit: contain; 
+    margin-bottom: 12px;
+    border-radius: 12px;
+}
+
+.product-name { font-weight: 700; font-size: 1.05rem; height: 3rem; overflow: hidden; }
+
+.price-container { 
+    margin-top: 10px;
+    background: #fff5f5;
+    padding: 8px;
+    border-radius: 10px;
+}
+.old-p { text-decoration: line-through; color: #a0a0a0; font-size: 0.85rem; margin-left: 8px; }
+.new-p { color: var(--city-red); font-weight: 900; font-size: 1.2rem; }
+
+/* الفوتر */
+.main-footer {
+    background: var(--hyper-black);
+    color: var(--white);
+    padding: 40px 5%;
+    text-align: center;
+}
+
