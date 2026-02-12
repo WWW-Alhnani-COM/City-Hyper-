@@ -16,7 +16,7 @@ body {
 /* الهيدر بخلفية حمراء ليدعم تداخل البحث */
 .main-header {
     background-color: var(--city-red);
-    padding: 20px 5% 60px 5%;
+    padding: 10px 5% 40px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
