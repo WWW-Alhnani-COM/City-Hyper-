@@ -261,3 +261,61 @@ body {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
 }
+
+
+/* تنسيق الهيدر الأساسي */
+.main-header {
+    background-color: var(--city-red); /* استخدام اللون الأحمر المعتمد */
+    padding: 25px 5% 65px 5%; /* زيادة المسافة السفلية للسماح بتداخل حقل البحث */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 40px; /* حواف دائرية كبيرة من الأسفل */
+    border-bottom-right-radius: 40px; /* حواف دائرية كبيرة من الأسفل */
+    position: sticky; /* يبقى ثابتاً عند التمرير */
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* تنسيق قسم اللوجو والنص */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo-img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    border-radius: 12px;
+    background: white; /* إعطاء خلفية بيضاء للوجو ليبرز فوق الأحمر */
+    padding: 5px;
+}
+
+.brand-name {
+    font-size: 1.7rem;
+    font-weight: 900;
+    color: var(--white); /* تغيير اللون للأبيض ليظهر بوضوح فوق الخلفية الحمراء */
+    letter-spacing: -0.5px;
+}
+
+/* أيقونة المفضلة أو الإشعارات في الهيدر */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-icon {
+    font-size: 1.5rem;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.header-icon:active {
+    transform: scale(0.9);
+}
+
