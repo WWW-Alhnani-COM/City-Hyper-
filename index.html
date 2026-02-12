@@ -3,132 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيتي هايبر - العروض</title>
+    <title>سيتي هايبر - أقوى العروض</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <style>
-        :root {
-            --city-red: #e63946;
-            --hyper-black: #1a1a1a;
-            --bg-light: #f4f4f4;
-            --white: #ffffff;
-        }
-
-        body { 
-            font-family: 'Cairo', sans-serif; 
-            margin: 0; 
-            background: var(--bg-light); 
-            color: var(--hyper-black);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        .main-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 5%;
-            background: var(--white);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .logo-section { display: flex; align-items: center; gap: 10px; }
-        .logo-img { width: 40px; height: 40px; object-fit: contain; }
-        .brand-name { font-size: 1.5rem; font-weight: 900; }
-        .city { color: var(--city-red); }
-        .hyper { color: var(--hyper-black); }
-
-        .banner-container {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-            margin-bottom: 20px;
-            background: #eee;
-        }
-        .banner-slide { width: 100%; height: 100%; display: none; object-fit: cover; }
-
-        .search-section { padding: 0 5%; margin-bottom: 20px; }
-        .search-input {
-            width: 100%;
-            padding: 12px 20px;
-            border: 2px solid #ddd;
-            border-radius: 25px;
-            font-size: 1rem;
-            font-family: 'Cairo', sans-serif;
-            transition: 0.3s;
-            outline: none;
-            box-sizing: border-box;
-        }
-        .search-input:focus { border-color: var(--city-red); box-shadow: 0 0 8px rgba(230, 57, 70, 0.2); }
-
-        .controls { display: flex; flex-direction: column; gap: 15px; padding: 0 5%; margin-bottom: 20px; }
-        .categories-tags { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; scrollbar-width: none; }
-        .categories-tags::-webkit-scrollbar { display: none; }
-
-        .tag-btn {
-            padding: 8px 18px;
-            background: var(--white);
-            border: 1px solid var(--city-red);
-            color: var(--city-red);
-            border-radius: 20px;
-            cursor: pointer;
-            font-weight: 700;
-            font-family: 'Cairo', sans-serif;
-            white-space: nowrap;
-            transition: 0.3s;
-        }
-        .tag-btn.active { background: var(--city-red); color: var(--white); }
-
-        .view-options { display: flex; gap: 10px; justify-content: flex-end; }
-        .view-btn {
-            background: var(--white);
-            border: 2px solid var(--city-red);
-            color: var(--city-red);
-            width: 45px;
-            height: 45px;
-            cursor: pointer;
-            border-radius: 12px;
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: 0.3s;
-        }
-        .view-btn.active { background: var(--city-red); color: var(--white); }
-
-        /* تنسيق كرت المنتج المحدث */
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; padding: 0 5% 40px; }
-        .list-view { grid-template-columns: 1fr !important; }
-
-        .product-card {
-            background: var(--white);
-            border-radius: 15px;
-            padding: 15px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            transition: 0.3s;
-        }
-        .product-card img { width: 100%; height: 150px; object-fit: contain; margin-bottom: 10px; }
-        .product-name { font-weight: 700; margin: 10px 0; font-size: 1.1rem; }
-        .price-container { display: flex; justify-content: center; gap: 10px; align-items: center; }
-        .old-p { text-decoration: line-through; color: #888; font-size: 0.9rem; }
-        .new-p { color: var(--city-red); font-weight: 900; font-size: 1.2rem; }
-
-        .main-footer {
-            background-color: var(--city-red);
-            color: var(--white);
-            padding: 30px 5%;
-            text-align: center;
-            margin-top: auto;
-        }
-        .footer-content h3 { margin: 0 0 10px; font-weight: 900; }
-        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.2); margin-top: 20px; padding-top: 10px; font-size: 0.85rem; }
-    </style>
 </head>
 <body>
 
@@ -141,148 +21,25 @@
         </div>
     </header>
 
-    <div class="banner-container" id="bannerContainer">
-        </div>
+    <div class="banner-container" id="bannerContainer"></div>
 
-    <div class="search-section">
+    <div class="controls-wrapper">
         <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن عرض أو منتج..." oninput="filterProducts()">
-    </div>
-
-    <div class="controls">
         <div class="categories-tags" id="categoryTags">
             <button class="tag-btn active" onclick="filterCat('all', this)">الكل</button>
-            </div>
-        
-        <div class="view-options">
-            <button id="gridBtn" class="view-btn active" onclick="changeView('grid', this)">🔲</button>
-            <button id="listBtn" class="view-btn" onclick="changeView('list', this)">🗒️</button>
         </div>
     </div>
 
-    <main class="products-grid" id="grid">
-        </main>
+    <main class="products-grid" id="grid"></main>
 
     <footer class="main-footer">
-        <div class="footer-content">
-            <h3>سيتي هايبر</h3>
-            <p>أفضل العروض اليومية بين يديك</p>
-              <p> الفرع الرئيسي: صنعاء , شارع المطار , جوار سوق العاصمة </p>
-            <p>944 777 771 967+</p>
-        </div>
-        <div class="footer-bottom">
-            <p>جميع الحقوق محفوظة &copy; 2026 سيتي هايبر</p>
-        </div>
+        <h3>سيتي هايبر</h3>
+        <p>أفضل العروض اليومية بين يديك</p>
+        <p>صنعاء - شارع المطار</p>
+        <p>جميع الحقوق محفوظة &copy; 2026</p>
     </footer>
 
-    <script>
-        // 1. إعداد الاتصال 🔗
-        const supabaseUrl = 'https://lluxexpussqaigzqmdii.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxsdXhleHB1c3NxYWlnenFtZGlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA1NzM0MjAsImV4cCI6MjA4NjE0OTQyMH0.9VWGHgKe-wJUadDhzvMpSxlg3sjTcnqXGfglOfnC-vw';
-        const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
-        let allProducts = []; // مخزن لحفظ كل المنتجات
-
-        // 2. وظيفة جلب البيانات عند التحميل 📥
-        async function loadAppData() {
-            await Promise.all([
-                fetchBanners(),
-                fetchCategories(),
-                fetchProducts()
-            ]);
-        }
-
-        // جلب البنرات 🖼️
-        async function fetchBanners() {
-            const { data } = await _supabase.from('banners').select('*');
-            const container = document.getElementById('bannerContainer');
-            if (data && data.length > 0) {
-                container.innerHTML = data.map((b, i) => 
-                    `<img src="${b.image_url}" class="banner-slide" style="display:${i===0?'block':'none'}">`
-                ).join('');
-                initBannerCycle();
-            }
-        }
-
-        // جلب التصنيفات 📂
-        async function fetchCategories() {
-            const { data } = await _supabase.from('categories').select('*');
-            const container = document.getElementById('categoryTags');
-            if (data) {
-                data.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.className = 'tag-btn';
-                    btn.innerText = cat.name;
-                    btn.onclick = () => filterCat(cat.id, btn);
-                    container.appendChild(btn);
-                });
-            }
-        }
-
-        // جلب المنتجات 🍎
-        async function fetchProducts() {
-            const { data } = await _supabase.from('products').select('*');
-            if (data) {
-                allProducts = data;
-                renderProducts(allProducts);
-            }
-        }
-
-        // عرض المنتجات في الصفحة
-        function renderProducts(list) {
-            const grid = document.getElementById('grid');
-            grid.innerHTML = list.map(p => `
-                <div class="product-card">
-                    <img src="${p.image_url}" alt="${p.name}">
-                    <div class="product-name">${p.name}</div>
-                    <div class="price-container">
-                        ${p.old_price ? `<span class="old-p">${p.old_price} ريال</span>` : ''}
-                        <span class="new-p">${p.new_price} ريال</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // 3. منطق التحكم (البحث والفلترة) 🔍
-        function filterProducts() {
-            const term = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allProducts.filter(p => p.name.toLowerCase().includes(term));
-            renderProducts(filtered);
-        }
-
-        function filterCat(catId, btn) {
-            document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            if (catId === 'all') {
-                renderProducts(allProducts);
-            } else {
-                const filtered = allProducts.filter(p => p.category_id == catId);
-                renderProducts(filtered);
-            }
-        }
-
-        // منطق البنر المتحرك
-        function initBannerCycle() {
-            let current = 0;
-            const slides = document.querySelectorAll('.banner-slide');
-            if(slides.length <= 1) return;
-            setInterval(() => {
-                slides[current].style.display = "none";
-                current = (current + 1) % slides.length;
-                slides[current].style.display = "block";
-            }, 5000);
-        }
-
-        function changeView(type, btn) {
-            const grid = document.getElementById('grid');
-            document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            grid.className = type === 'list' ? 'products-grid list-view' : 'products-grid';
-        }
-
-        // تشغيل كل شيء!
-        loadAppData();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
 
