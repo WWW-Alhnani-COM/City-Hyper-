@@ -1,141 +1,122 @@
 :root {
-    --city-red: #e63946;
-    --hyper-black: #1a1a1a;
-    --bg-light: #f8f9fa;
+    --primary-pink: #e63946; /* لون سيتي هايبر */
+    --accent-pink: #ff4d6d;
     --white: #ffffff;
-    --shadow: 0 4px 15px rgba(0,0,0,0.08);
+    --bg-light: #f9f9f9;
+    --radius-lg: 30px; /* الزوايا الدائرية الكبيرة كما في الصورة */
+    --radius-sm: 15px;
 }
 
-* { box-sizing: border-box; }
-
-body { 
-    font-family: 'Cairo', sans-serif; 
-    margin: 0; 
-    background: var(--bg-light); 
-    color: var(--hyper-black);
-    line-height: 1.6;
+body {
+    background-color: var(--bg-light);
+    margin: 0;
+    padding: 0;
+    direction: rtl;
+    font-family: 'Cairo', sans-serif;
 }
 
-/* الهيدر */
+/* 1. تصميم الهيدر والبحث (مشابه للصورة) */
 .main-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 5%;
-    background: var(--white);
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    background-color: var(--primary-pink);
+    padding: 20px 5% 50px 5%;
+    border-bottom-left-radius: var(--radius-lg);
+    border-bottom-right-radius: var(--radius-lg);
+    color: white;
 }
 
-.logo-section { display: flex; align-items: center; gap: 12px; }
-.logo-img { width: 45px; height: 45px; object-fit: contain; }
-.brand-name { font-size: 1.6rem; font-weight: 900; }
-.city { color: var(--city-red); }
-
-/* البنرات */
-.banner-container {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    position: relative;
-    background: #ddd;
-}
-.banner-slide { 
-    width: 100%; 
-    height: 100%; 
-    display: none; 
-    object-fit: cover;
-    animation: fadeIn 0.8s ease;
-}
-
-@keyframes fadeIn { from { opacity: 0.5; } to { opacity: 1; } }
-
-/* قسم البحث والتحكم */
-.controls-wrapper {
-    padding: 20px 5%;
-    background: var(--white);
-    margin-bottom: 20px;
+.search-section {
+    margin: -25px 5% 20px 5%; /* لجعل حقل البحث يبرز فوق الهيدر */
 }
 
 .search-input {
     width: 100%;
-    padding: 14px 25px;
-    border: 2px solid #eee;
+    padding: 15px 25px;
     border-radius: 50px;
-    font-size: 1rem;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     font-family: 'Cairo';
-    transition: 0.3s;
     outline: none;
-    margin-bottom: 20px;
+    transition: 0.3s;
 }
-.search-input:focus { border-color: var(--city-red); }
 
+/* 2. تصميم البنرات (Bento Grid Style) */
+.banner-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* تقسيم غير متساوي مثل الصورة */
+    gap: 12px;
+    padding: 10px 5%;
+    height: auto;
+}
+
+.banner-slide {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(135deg, var(--primary-pink), var(--accent-pink));
+    display: block; /* الغاء display:none مؤقتاً للتأكد من المظهر */
+}
+
+/* 3. تصميم التصنيفات (Pills) */
 .categories-tags {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     overflow-x: auto;
-    padding-bottom: 10px;
-    scrollbar-width: none;
+    padding: 15px 5%;
+    scrollbar-width: none; /* إخفاء شريط التمرير */
 }
+
 .categories-tags::-webkit-scrollbar { display: none; }
 
 .tag-btn {
-    padding: 8px 22px;
-    background: #f0f0f0;
+    padding: 10px 25px;
+    background: white;
     border: none;
-    color: #555;
+    color: #666;
     border-radius: 50px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     transition: 0.3s;
 }
-.tag-btn.active { background: var(--city-red); color: white; }
 
-/* شبكة المنتجات */
-.products-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-    gap: 20px; 
-    padding: 0 5% 40px; 
+.tag-btn.active {
+    background-color: var(--primary-pink);
+    color: white;
+}
+
+/* 4. التجاوب والمسافات للمنتجات */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* عرض منتجين في الصف للموبايل */
+    gap: 15px;
+    padding: 10px 5% 100px 5%;
 }
 
 .product-card {
-    background: var(--white);
-    border-radius: 18px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s;
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+    text-align: right;
     border: 1px solid #f0f0f0;
 }
-.product-card:hover { transform: translateY(-5px); }
 
-.product-card img { 
-    width: 100%; 
-    height: 160px; 
-    object-fit: contain; 
-    margin-bottom: 12px;
-    border-radius: 12px;
+.product-card img {
+    width: 100%;
+    height: 130px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
 }
 
-.product-name { font-weight: 700; font-size: 1.05rem; height: 3rem; overflow: hidden; }
-
-.price-container { 
-    margin-top: 10px;
-    background: #fff5f5;
-    padding: 8px;
-    border-radius: 10px;
+/* التجاوب للشاشات الكبيرة */
+@media (min-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .banner-container {
+        height: 250px;
+    }
 }
-.old-p { text-decoration: line-through; color: #a0a0a0; font-size: 0.85rem; margin-left: 8px; }
-.new-p { color: var(--city-red); font-weight: 900; font-size: 1.2rem; }
 
-/* الفوتر */
-.main-footer {
-    background: var(--hyper-black);
-    color: var(--white);
-    padding: 40px 5%;
-    text-align: center;
-}
