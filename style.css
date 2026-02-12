@@ -2,52 +2,60 @@
     --city-red: #e63946;
     --white: #ffffff;
     --bg-light: #f8f9fa;
-    --radius-main: 25px; /* حواف دائرية للبنر */
+    --radius-main: 25px;
 }
 
-/* 1. جعل الهيدر خلفية للبحث */
+body {
+    font-family: 'Cairo', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    direction: rtl;
+}
+
+/* 1. الهيدر: خلفية مستديرة ومنحنية */
 .main-header {
     background-color: var(--city-red);
-    padding: 20px 5% 50px 5%;
+    padding: 30px 5% 70px 5%; /* مساحة كافية خلف البحث */
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    color: white;
 }
-.brand-name { color: white; font-weight: 900; }
+.brand-name { color: white; font-weight: 900; font-size: 1.6rem; }
 
-/* 2. حقل البحث: حواف دائرية، أيقونة، وتداخل فوق البنر */
+/* 2. حقل البحث: أيقونة وحواف دائرية وتداخل صحيح */
 .controls-wrapper {
     padding: 0 7%;
-    margin-top: -25px; /* يرتفع فوق الهيدر */
+    margin-top: -30px; /* التداخل فوق الهيدر */
     position: relative;
     z-index: 100;
-    background: transparent; /* لضمان عدم وجود خلفية بيضاء تخرب التداخل */
 }
 
 .search-input {
     width: 100%;
     padding: 15px 45px 15px 20px;
-    border-radius: 50px; /* حواف دائرية كاملة */
+    border-radius: 50px;
     border: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     font-family: 'Cairo';
+    outline: none;
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
     background-repeat: no-repeat;
     background-position: right 20px center;
-    outline: none;
 }
 
-/* 3. البنر الأساسي: حواف دائرية ومسافات بسيطة وتمرير */
+/* 3. البنر الأساسي: حواف دائرية ومسافات وتمرير يدوي */
 .banner-container {
-    margin: 15px; /* مسافات بسيطة من جميع الجهات */
+    margin: 20px 15px; /* مسافات من جميع الجهات */
     height: 180px;
     border-radius: var(--radius-main);
     display: flex;
-    overflow-x: auto; /* يسمح بالتمرير اليدوي */
+    overflow-x: auto; /* تمرير يدوي */
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    background: #eee;
+    background-color: #eee;
 }
 .banner-container::-webkit-scrollbar { display: none; }
 
@@ -57,22 +65,21 @@
     scroll-snap-align: start;
     border-radius: var(--radius-main);
     object-fit: cover;
-    display: block !important; /* لضمان ظهورها عند التمرير */
-    transition: opacity 0.5s ease; /* تأثير التلاشي */
+    transition: opacity 0.6s ease-in-out; /* تلاشي ناعم */
 }
 
-/* 4. البنر الصغير (نظام النصف يظهر) */
-/* سنستخدم نفس الحاوية بتعديل بسيط */
-#subBanners {
+/* 4. البنرات الصغرى (نظام النصف يظهر) */
+/* نطبق هذا على أي قسم صور إضافي تحت البنر الأساسي */
+.sub-banners {
     display: flex;
-    gap: 12px;
-    padding: 0 15px 15px;
+    gap: 15px;
+    padding: 0 15px 20px 15px;
     overflow-x: auto;
     scrollbar-width: none;
 }
-.sub-banner {
-    min-width: 75%; /* يظهر جزء من الذي بجانبه */
-    height: 110px;
+.sub-banners img {
+    min-width: 75%; /* يظهر جزء من البنر التالي */
+    height: 120px;
     border-radius: 20px;
     object-fit: cover;
 }
@@ -85,17 +92,27 @@
     overflow-x: auto;
     scrollbar-width: none;
 }
+.tag-btn {
+    padding: 10px 25px;
+    background: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    white-space: nowrap;
+}
+.tag-btn.active { background: var(--city-red); color: white; }
 
-/* 6. المنتجات (التجاوب والمسافات) */
+/* 6. شبكة المنتجات (عمودين متناسقين) */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* عمودين في الموبايل */
-    gap: 12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
     padding: 10px 15px 40px;
 }
-
 .product-card {
-    border-radius: 20px; /* حواف دائرية للمنتجات أيضاً */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    background: white;
+    border-radius: 25px;
+    padding: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
-
