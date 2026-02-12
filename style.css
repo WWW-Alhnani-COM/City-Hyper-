@@ -236,3 +236,121 @@ body {
     opacity: 0.9;
 }
 
+
+
+/* --- صفحة تفاصيل المنتج (تظهر فوق المحتوى الحالي أو في صفحة منفصلة) --- */
+.product-details-page {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-light);
+    z-index: 3000;
+    overflow-y: auto;
+    display: none; /* مخفية افتراضياً */
+}
+
+.details-header {
+    background: var(--city-red);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.back-btn {
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.details-content {
+    padding-bottom: 120px;
+}
+
+.details-image-container {
+    width: 100%;
+    height: 350px;
+    background: white;
+    padding: 20px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    box-shadow: var(--shadow);
+}
+
+.details-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.details-info-wrapper {
+    padding: 25px 20px;
+}
+
+.details-name {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+.offer-badge {
+    background: #fff5f5;
+    border: 1px dashed var(--city-red);
+    padding: 15px;
+    border-radius: 15px;
+    margin: 20px 0;
+}
+
+.offer-badge h4 { color: var(--city-red); margin: 0 0 5px 0; }
+
+.details-price {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.details-new-p { font-size: 2rem; color: var(--city-red); font-weight: 900; }
+.details-old-p { color: #aaa; text-decoration: line-through; }
+
+.details-description {
+    color: #555;
+    line-height: 1.8;
+    background: white;
+    padding: 15px;
+    border-radius: 20px;
+}
+
+/* زر الطلب العائم في صفحة التفاصيل */
+.order-bar {
+    position: fixed;
+    bottom: 20px;
+    left: 5%;
+    width: 90%;
+    background: var(--white);
+    padding: 15px;
+    border-radius: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 3001;
+}
+
+.whatsapp-btn {
+    background: #25D366;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
