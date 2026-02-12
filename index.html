@@ -16,87 +16,21 @@
         <div class="logo-section">
             <img src="logo.png" alt="Logo" class="logo-img">
             <div class="brand-name">
-                <span class="city" style="color: white;">سيتي هايبر</span>
+                <span class="city">سيتي</span> <span class="hyper">هايبر</span>
             </div>
         </div>
-        <div style="font-size: 1.5rem; color: white; cursor: pointer;">❤️</div>
     </header>
 
-    <div class="search-section">
-        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن عرض أو منتج..." oninput="filterProducts()">
-    </div>
-
-    <div class="banner-container" id="bannerContainer">
-        </div>
+    <div class="banner-container" id="bannerContainer"></div>
 
     <div class="controls-wrapper">
-        <div class="categories-tags" id="categoryTags">
-            <button class="tag-btn active" onclick="filterCat('all', this)">الكل</button>
-            </div>
-    </div>
-
-    <main class="products-grid" id="grid">
-        </main>
-
-    <div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 2000;">
-        <div style="width: 55px; height: 55px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer;">💬</div>
-        <div style="width: 55px; height: 55px; background: #e63946; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer;">🛒</div>
-    </div>
-
-    <footer class="main-footer">
-        <h3>سيتي هايبر</h3>
-        <p>أفضل العروض اليومية بين يديك</p>
-        <p>صنعاء - شارع المطار</p>
-        <p>جميع الحقوق محفوظة &copy; 2026</p>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيتي هايبر - أقوى العروض</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-<body>
-
-    <header class="main-header">
-        <div class="logo-section">
-            <img src="logo.png" alt="Logo" class="logo-img">
-            <div class="brand-name">
-                <span class="city" style="color: white;">سيتي هايبر</span>
-            </div>
-        </div>
-        <div style="font-size: 1.5rem; color: white; cursor: pointer;">❤️</div>
-    </header>
-
-    <div class="search-section">
         <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن عرض أو منتج..." oninput="filterProducts()">
-    </div>
-
-    <div class="banner-container" id="bannerContainer">
-        </div>
-
-    <div class="controls-wrapper">
         <div class="categories-tags" id="categoryTags">
             <button class="tag-btn active" onclick="filterCat('all', this)">الكل</button>
-            </div>
+        </div>
     </div>
 
-    <main class="products-grid" id="grid">
-        </main>
-
-    <div style="position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 2000;">
-        <div style="width: 55px; height: 55px; background: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer;">💬</div>
-        <div style="width: 55px; height: 55px; background: #e63946; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.2); cursor: pointer;">🛒</div>
-    </div>
+    <main class="products-grid" id="grid"></main>
 
     <footer class="main-footer">
         <h3>سيتي هايبر</h3>
