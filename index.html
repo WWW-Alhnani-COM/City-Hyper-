@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيتي هايبر - أقوى العروض</title>
-    
+    <title>سيتي هايبر - العروض الحديثة</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -15,29 +13,35 @@
     <header class="main-header">
         <div class="logo-section">
             <img src="logo.png" alt="Logo" class="logo-img">
-            <div class="brand-name">
-                <span class="city">سيتي</span> <span class="hyper">هايبر</span>
-            </div>
+            <div class="brand-name">سيتي هايبر</div>
         </div>
+        <div style="font-size: 1.5rem;">❤️</div>
     </header>
 
-    <div class="banner-container" id="bannerContainer"></div>
+    <div class="search-section">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن منتج..." oninput="filterProducts()">
+        </div>
+    </div>
 
-    <div class="controls-wrapper">
-        <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن عرض أو منتج..." oninput="filterProducts()">
+    <div class="banner-wrapper">
+        <div class="main-banner-container" id="bannerContainer">
+            </div>
+    </div>
+
+    <div class="sub-banners-container" id="subBanners">
+        <img src="offer1.jpg" class="sub-banner-item">
+        <img src="offer2.jpg" class="sub-banner-item">
+    </div>
+
+    <div class="categories-wrapper">
         <div class="categories-tags" id="categoryTags">
             <button class="tag-btn active" onclick="filterCat('all', this)">الكل</button>
         </div>
     </div>
 
     <main class="products-grid" id="grid"></main>
-
-    <footer class="main-footer">
-        <h3>سيتي هايبر</h3>
-        <p>أفضل العروض اليومية بين يديك</p>
-        <p>صنعاء - شارع المطار</p>
-        <p>جميع الحقوق محفوظة &copy; 2026</p>
-    </footer>
 
     <script src="script.js"></script>
 </body>
