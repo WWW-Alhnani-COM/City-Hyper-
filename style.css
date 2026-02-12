@@ -1,122 +1,120 @@
 :root {
-    --primary-pink: #e63946; /* لون سيتي هايبر */
-    --accent-pink: #ff4d6d;
+    --city-red: #e63946;
     --white: #ffffff;
-    --bg-light: #f9f9f9;
-    --radius-lg: 30px; /* الزوايا الدائرية الكبيرة كما في الصورة */
-    --radius-sm: 15px;
+    --bg-light: #f8f9fa;
+    --radius: 25px;
 }
 
 body {
-    background-color: var(--bg-light);
+    font-family: 'Cairo', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: var(--bg-light);
     direction: rtl;
-    font-family: 'Cairo', sans-serif;
 }
 
-/* 1. تصميم الهيدر والبحث (مشابه للصورة) */
+/* 1. إصلاح الهيدر ليصبح كخلفية مستديرة */
 .main-header {
-    background-color: var(--primary-pink);
-    padding: 20px 5% 50px 5%;
-    border-bottom-left-radius: var(--radius-lg);
-    border-bottom-right-radius: var(--radius-lg);
-    color: white;
+    background-color: var(--city-red);
+    padding: 30px 5% 60px 5%; /* زيادة الـ padding السفلي */
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
+.logo-section .logo-img { width: 45px; height: 45px; object-fit: contain; }
+.brand-name { font-size: 1.5rem; font-weight: 900; color: white; }
+
+/* 2. إصلاح حقل البحث ليتداخل بشكل صحيح */
 .search-section {
-    margin: -25px 5% 20px 5%; /* لجعل حقل البحث يبرز فوق الهيدر */
+    padding: 0 7%;
+    margin-top: -30px; /* سحب الحقل للأعلى ليغطي جزء من الهيدر */
+    position: relative;
+    z-index: 10;
 }
 
 .search-input {
     width: 100%;
-    padding: 15px 25px;
+    padding: 14px 25px;
     border-radius: 50px;
     border: none;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     font-family: 'Cairo';
+    font-size: 1rem;
     outline: none;
-    transition: 0.3s;
 }
 
-/* 2. تصميم البنرات (Bento Grid Style) */
+/* 3. إصلاح البنرات (Bento Grid) */
 .banner-container {
     display: grid;
-    grid-template-columns: 2fr 1fr; /* تقسيم غير متساوي مثل الصورة */
+    grid-template-columns: 2fr 1fr;
     gap: 12px;
-    padding: 10px 5%;
-    height: auto;
+    padding: 20px 5% 10px 5%;
 }
 
-.banner-slide {
+/* في حال وجود صورة واحدة فقط ستأخذ العرض كاملاً */
+.banner-container img, .banner-slide {
     width: 100%;
-    height: 160px;
+    height: 150px;
     object-fit: cover;
-    border-radius: var(--radius-lg);
-    background: linear-gradient(135deg, var(--primary-pink), var(--accent-pink));
-    display: block; /* الغاء display:none مؤقتاً للتأكد من المظهر */
+    border-radius: var(--radius);
+    background-color: #ddd;
 }
 
-/* 3. تصميم التصنيفات (Pills) */
+/* 4. إصلاح التصنيفات (المسافات والظهور) */
+.controls-wrapper {
+    padding: 10px 5%;
+}
+
 .categories-tags {
     display: flex;
     gap: 10px;
     overflow-x: auto;
-    padding: 15px 5%;
-    scrollbar-width: none; /* إخفاء شريط التمرير */
+    padding: 10px 0;
+    scrollbar-width: none;
 }
-
 .categories-tags::-webkit-scrollbar { display: none; }
 
 .tag-btn {
-    padding: 10px 25px;
+    padding: 8px 20px;
     background: white;
     border: none;
-    color: #666;
     border-radius: 50px;
     cursor: pointer;
     font-weight: 700;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    transition: 0.3s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    color: #666;
 }
+.tag-btn.active { background: var(--city-red); color: white; }
 
-.tag-btn.active {
-    background-color: var(--primary-pink);
-    color: white;
-}
-
-/* 4. التجاوب والمسافات للمنتجات */
+/* 5. شبكة المنتجات (عمودين في الموبايل) */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* عرض منتجين في الصف للموبايل */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    padding: 10px 5% 100px 5%;
+    padding: 15px 5% 80px 5%;
 }
 
 .product-card {
     background: white;
-    border-radius: var(--radius-lg);
+    border-radius: 20px;
     padding: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-    text-align: right;
-    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    text-align: center;
 }
 
 .product-card img {
     width: 100%;
-    height: 130px;
+    height: 120px;
     object-fit: contain;
-    border-radius: var(--radius-sm);
+    border-radius: 15px;
 }
 
-/* التجاوب للشاشات الكبيرة */
-@media (min-width: 768px) {
-    .products-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    }
-    .banner-container {
-        height: 250px;
-    }
-}
+.product-name { font-size: 0.9rem; font-weight: 700; margin: 10px 0; height: 2.5rem; overflow: hidden; }
 
+.price-container { display: flex; justify-content: center; gap: 5px; align-items: center; }
+.new-p { color: var(--city-red); font-weight: 900; }
+.old-p { font-size: 0.7rem; color: #aaa; text-decoration: line-through; }
