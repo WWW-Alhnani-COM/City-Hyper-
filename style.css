@@ -19,13 +19,11 @@ body {
 /* --- الهيدر (تم تصغير الطول والمسافات) --- */
 .main-header {
     background-color: var(--city-red);
-    /* تقليل الـ padding لضغط طول الهيدر */
     padding: 12px 5% 45px 5%; 
     display: flex;
     justify-content: space-between;
     align-items: center;
     color: white;
-    /* تصغير الانحناء ليتناسب مع الحجم الجديد */
     border-bottom-left-radius: 30px; 
     border-bottom-right-radius: 30px;
     position: sticky;
@@ -37,25 +35,30 @@ body {
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
 }
 
+/* تعديل اللوجو بخلفية بيضاء دائرية */
 .logo-img {
-    width: 35px; /* تصغير اللوجو */
-    height: 35px;
+    width: 40px; 
+    height: 40px;
     object-fit: contain;
+    background-color: white; /* خلفية بيضاء */
+    border-radius: 50%; /* دائرية بالكامل */
+    padding: 5px; /* مسافة للداخل */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
 .brand-name { 
     color: white; 
     font-weight: 900; 
-    font-size: 1.3rem; /* تصغير حجم الخط */
+    font-size: 1.3rem;
 }
 
 /* --- حقل البحث (تعديل التداخل مع الهيدر المصغر) --- */
 .search-section {
     padding: 0 5%;
-    margin-top: -22px; /* تعديل المسافة ليتوسط المنحنى الجديد */
+    margin-top: -22px; 
     position: relative;
     z-index: 1001;
 }
@@ -83,7 +86,7 @@ body {
     font-size: 1.1rem;
 }
 
-/* --- البنرات (حواف دائرية ومسافات) --- */
+/* --- البنرات --- */
 .banner-wrapper {
     padding: 15px; 
 }
@@ -110,7 +113,7 @@ body {
     transition: opacity 0.5s ease; 
 }
 
-/* --- البنرات الصغيرة (نظام النصف يظهر) --- */
+/* --- البنرات الصغيرة --- */
 .sub-banners-container {
     padding: 0 15px 15px 15px;
     display: flex;
@@ -158,7 +161,7 @@ body {
     color: white; 
 }
 
-/* --- المنتجات (تنسيق الكروت والشبكة) --- */
+/* --- المنتجات --- */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -200,13 +203,26 @@ body {
 .new-p { color: var(--city-red); font-weight: 900; }
 .old-p { color: #aaa; text-decoration: line-through; font-size: 0.75rem; }
 
-/* --- الفوتر --- */
+/* --- الفوتر (تم تغيير اللون للأحمر وتنسيق الخط) --- */
 .main-footer {
-    background-color: var(--hyper-black);
+    background-color: var(--city-red); /* تغيير اللون للأحمر مثل الهيدر */
     color: white;
-    padding: 30px 15px;
+    padding: 40px 15px;
     text-align: center;
-    border-top-left-radius: 25px;
-    border-top-right-radius: 25px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
+}
+
+.main-footer h3 {
+    margin: 0 0 10px;
+    font-weight: 900;
+    font-size: 1.5rem;
+}
+
+.main-footer p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+    opacity: 0.9;
 }
 
