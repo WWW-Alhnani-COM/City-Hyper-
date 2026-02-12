@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سيتي هايبر - العروض الحديثة</title>
+    
+    <title>سيتي هايبر - أقوى عروض المواد الغذائية والإلكترونيات</title>
+    
+    <meta name="description" content="سيتي هايبر - وجهتكم الأولى لأفضل العروض اليومية والحصرية في صنعاء. تسوق الآن المواد الغذائية، الإلكترونيات، والمستلزمات المنزلية بأفضل الأسعار.">
+    
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <meta property="og:title" content="سيتي هايبر - أفضل العروض اليومية بين يديك">
+    <meta property="og:description" content="تصفح أحدث العروض والمنتجات بأسعار منافسة. اطلب الآن عبر الواتساب واستمتع بجودة سيتي هايبر.">
+    <meta property="og:image" content="https://lluxexpussqaigzqmdii.supabase.co/storage/v1/object/public/banners/share-preview.jpg"> <meta property="og:url" content="https://city-hyper.com"> <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="سيتي هايبر - عروض حصرية">
+    <meta name="twitter:description" content="أفضل العروض والأسعار في اليمن.">
+    <meta name="twitter:image" content="logo.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -25,13 +41,10 @@
     </div>
 
     <div class="banner-wrapper">
-        <div class="main-banner-container" id="bannerContainer">
-            </div>
+        <div class="main-banner-container" id="bannerContainer"></div>
     </div>
 
-    <div class="sub-banners-container" id="subBanners">
-
-    </div>
+    <div class="sub-banners-container" id="subBanners"></div>
 
     <div class="categories-wrapper">
         <div class="categories-tags" id="categoryTags">
@@ -40,17 +53,14 @@
     </div>
 
     <main class="products-grid" id="grid"></main>
+
     <div id="productDetailsPage" class="product-details-page">
-    <div class="details-header">
-        <span class="back-btn" onclick="closeDetails()">✕</span>
-        <h2 style="font-size: 1.2rem; margin: 0;">تفاصيل المنتج</h2>
-    </div>
-
-    <div class="details-content" id="detailsContent">
+        <div class="details-header">
+            <span class="back-btn" onclick="closeDetails()">✕</span>
+            <h2 style="font-size: 1.2rem; margin: 0;">تفاصيل المنتج</h2>
         </div>
-</div>
-
-    
+        <div class="details-content" id="detailsContent"></div>
+    </div>
 
     <footer class="main-footer">
         <h3>سيتي هايبر</h3>
