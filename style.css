@@ -1,141 +1,101 @@
 :root {
     --city-red: #e63946;
-    --hyper-black: #1a1a1a;
-    --bg-light: #f8f9fa;
     --white: #ffffff;
-    --shadow: 0 4px 15px rgba(0,0,0,0.08);
+    --bg-light: #f8f9fa;
+    --radius-main: 25px; /* حواف دائرية للبنر */
 }
 
-* { box-sizing: border-box; }
-
-body { 
-    font-family: 'Cairo', sans-serif; 
-    margin: 0; 
-    background: var(--bg-light); 
-    color: var(--hyper-black);
-    line-height: 1.6;
-}
-
-/* الهيدر */
+/* 1. جعل الهيدر خلفية للبحث */
 .main-header {
+    background-color: var(--city-red);
+    padding: 20px 5% 50px 5%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 5%;
-    background: var(--white);
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    color: white;
 }
+.brand-name { color: white; font-weight: 900; }
 
-.logo-section { display: flex; align-items: center; gap: 12px; }
-.logo-img { width: 45px; height: 45px; object-fit: contain; }
-.brand-name { font-size: 1.6rem; font-weight: 900; }
-.city { color: var(--city-red); }
-
-/* البنرات */
-.banner-container {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    position: relative;
-    background: #ddd;
-}
-.banner-slide { 
-    width: 100%; 
-    height: 100%; 
-    display: none; 
-    object-fit: cover;
-    animation: fadeIn 0.8s ease;
-}
-
-@keyframes fadeIn { from { opacity: 0.5; } to { opacity: 1; } }
-
-/* قسم البحث والتحكم */
+/* 2. حقل البحث: حواف دائرية، أيقونة، وتداخل فوق البنر */
 .controls-wrapper {
-    padding: 20px 5%;
-    background: var(--white);
-    margin-bottom: 20px;
+    padding: 0 7%;
+    margin-top: -25px; /* يرتفع فوق الهيدر */
+    position: relative;
+    z-index: 100;
+    background: transparent; /* لضمان عدم وجود خلفية بيضاء تخرب التداخل */
 }
 
 .search-input {
     width: 100%;
-    padding: 14px 25px;
-    border: 2px solid #eee;
-    border-radius: 50px;
-    font-size: 1rem;
+    padding: 15px 45px 15px 20px;
+    border-radius: 50px; /* حواف دائرية كاملة */
+    border: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
     font-family: 'Cairo';
-    transition: 0.3s;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="gray" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+    background-repeat: no-repeat;
+    background-position: right 20px center;
     outline: none;
-    margin-bottom: 20px;
 }
-.search-input:focus { border-color: var(--city-red); }
 
-.categories-tags {
+/* 3. البنر الأساسي: حواف دائرية ومسافات بسيطة وتمرير */
+.banner-container {
+    margin: 15px; /* مسافات بسيطة من جميع الجهات */
+    height: 180px;
+    border-radius: var(--radius-main);
+    display: flex;
+    overflow-x: auto; /* يسمح بالتمرير اليدوي */
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    background: #eee;
+}
+.banner-container::-webkit-scrollbar { display: none; }
+
+.banner-slide {
+    min-width: 100%;
+    height: 100%;
+    scroll-snap-align: start;
+    border-radius: var(--radius-main);
+    object-fit: cover;
+    display: block !important; /* لضمان ظهورها عند التمرير */
+    transition: opacity 0.5s ease; /* تأثير التلاشي */
+}
+
+/* 4. البنر الصغير (نظام النصف يظهر) */
+/* سنستخدم نفس الحاوية بتعديل بسيط */
+#subBanners {
     display: flex;
     gap: 12px;
+    padding: 0 15px 15px;
     overflow-x: auto;
-    padding-bottom: 10px;
     scrollbar-width: none;
 }
-.categories-tags::-webkit-scrollbar { display: none; }
-
-.tag-btn {
-    padding: 8px 22px;
-    background: #f0f0f0;
-    border: none;
-    color: #555;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    white-space: nowrap;
-    transition: 0.3s;
+.sub-banner {
+    min-width: 75%; /* يظهر جزء من الذي بجانبه */
+    height: 110px;
+    border-radius: 20px;
+    object-fit: cover;
 }
-.tag-btn.active { background: var(--city-red); color: white; }
 
-/* شبكة المنتجات */
-.products-grid { 
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); 
-    gap: 20px; 
-    padding: 0 5% 40px; 
+/* 5. التصنيفات تحت البنر */
+.categories-tags {
+    padding: 10px 15px;
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+/* 6. المنتجات (التجاوب والمسافات) */
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* عمودين في الموبايل */
+    gap: 12px;
+    padding: 10px 15px 40px;
 }
 
 .product-card {
-    background: var(--white);
-    border-radius: 18px;
-    padding: 15px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s;
-    border: 1px solid #f0f0f0;
-}
-.product-card:hover { transform: translateY(-5px); }
-
-.product-card img { 
-    width: 100%; 
-    height: 160px; 
-    object-fit: contain; 
-    margin-bottom: 12px;
-    border-radius: 12px;
+    border-radius: 20px; /* حواف دائرية للمنتجات أيضاً */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.product-name { font-weight: 700; font-size: 1.05rem; height: 3rem; overflow: hidden; }
-
-.price-container { 
-    margin-top: 10px;
-    background: #fff5f5;
-    padding: 8px;
-    border-radius: 10px;
-}
-.old-p { text-decoration: line-through; color: #a0a0a0; font-size: 0.85rem; margin-left: 8px; }
-.new-p { color: var(--city-red); font-weight: 900; font-size: 1.2rem; }
-
-/* الفوتر */
-.main-footer {
-    background: var(--hyper-black);
-    color: var(--white);
-    padding: 40px 5%;
-    text-align: center;
-}
