@@ -14,9 +14,11 @@ body {
     background: var(--bg-light); 
     direction: rtl;
     line-height: 1.6;
+    /* إضافة padding سفلي لضمان عدم اختفاء آخر المنتجات تحت الفوتر الثابت */
+    padding-bottom: 80px; 
 }
 
-/* --- الهيدر (تم تصغير الطول والمسافات) --- */
+/* --- الهيدر --- */
 .main-header {
     background-color: var(--city-red);
     padding: 12px 5% 45px 5%; 
@@ -32,20 +34,14 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.logo-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-/* تعديل اللوجو بخلفية بيضاء دائرية */
+/* اللوجو بخلفية بيضاء دائرية */
 .logo-img {
     width: 40px; 
     height: 40px;
     object-fit: contain;
-    background-color: white; /* خلفية بيضاء */
-    border-radius: 50%; /* دائرية بالكامل */
-    padding: 5px; /* مسافة للداخل */
+    background-color: white;
+    border-radius: 50%;
+    padding: 5px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
@@ -55,18 +51,12 @@ body {
     font-size: 1.3rem;
 }
 
-/* --- حقل البحث (تعديل التداخل مع الهيدر المصغر) --- */
+/* --- حقل البحث المتداخل --- */
 .search-section {
     padding: 0 5%;
     margin-top: -22px; 
     position: relative;
     z-index: 1001;
-}
-
-.search-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
 }
 
 .search-input {
@@ -79,18 +69,8 @@ body {
     outline: none;
 }
 
-.search-icon {
-    position: absolute;
-    right: 18px;
-    color: #888;
-    font-size: 1.1rem;
-}
-
 /* --- البنرات --- */
-.banner-wrapper {
-    padding: 15px; 
-}
-
+.banner-wrapper { padding: 15px; }
 .main-banner-container {
     width: 100%;
     height: 180px;
@@ -99,66 +79,14 @@ body {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    background: #eee;
 }
-
 .main-banner-container::-webkit-scrollbar { display: none; }
-
 .banner-slide {
     min-width: 100%;
     height: 100%;
     scroll-snap-align: start;
     object-fit: cover;
     border-radius: var(--radius-lg);
-    transition: opacity 0.5s ease; 
-}
-
-/* --- البنرات الصغيرة --- */
-.sub-banners-container {
-    padding: 0 15px 15px 15px;
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-
-.sub-banners-container::-webkit-scrollbar { display: none; }
-
-.sub-banner-item {
-    min-width: 75%; 
-    height: 110px;
-    border-radius: 20px;
-    object-fit: cover;
-    background: #ccc;
-    flex-shrink: 0;
-}
-
-/* --- التصنيفات --- */
-.categories-wrapper {
-    padding: 10px 15px;
-}
-
-.categories-tags {
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-
-.tag-btn {
-    padding: 8px 22px;
-    background: white;
-    border: none;
-    border-radius: 50px;
-    font-weight: 700;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    white-space: nowrap;
-    cursor: pointer;
-}
-
-.tag-btn.active { 
-    background: var(--city-red); 
-    color: white; 
 }
 
 /* --- المنتجات --- */
@@ -166,63 +94,47 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    padding: 10px 15px 40px;
+    padding: 10px 15px 20px;
 }
-
 .product-card {
     background: var(--white);
     border-radius: 20px;
     padding: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     text-align: center;
-    border: 1px solid #f1f1f1;
 }
 
-.product-card img {
+/* --- الفوتر الثابت (Fixed Footer) --- */
+.main-footer {
+    background-color: var(--city-red); /* نفس لون الهيدر */
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    /* تثبيت الفوتر في الأسفل */
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 120px;
-    object-fit: contain;
-    border-radius: 15px;
-}
-
-.product-name {
-    font-size: 0.9rem;
-    font-weight: 700;
-    margin: 8px 0;
-    height: 2.5rem;
-    overflow: hidden;
-}
-
-.price-container {
+    z-index: 2000;
+    /* تصميم منحني من الأعلى */
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
-}
-
-.new-p { color: var(--city-red); font-weight: 900; }
-.old-p { color: #aaa; text-decoration: line-through; font-size: 0.75rem; }
-
-/* --- الفوتر (تم تغيير اللون للأحمر وتنسيق الخط) --- */
-.main-footer {
-    background-color: var(--city-red); /* تغيير اللون للأحمر مثل الهيدر */
-    color: white;
-    padding: 40px 15px;
-    text-align: center;
-    border-top-left-radius: 30px;
-    border-top-right-radius: 30px;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.05);
 }
 
 .main-footer h3 {
-    margin: 0 0 10px;
+    margin: 0;
+    font-size: 1.1rem;
     font-weight: 900;
-    font-size: 1.5rem;
 }
 
 .main-footer p {
-    margin: 5px 0;
-    font-size: 0.9rem;
+    margin: 2px 0;
+    font-size: 0.75rem;
     opacity: 0.9;
 }
 
