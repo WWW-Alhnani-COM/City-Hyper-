@@ -1,5 +1,5 @@
 :root {
-    --city-red: #e63946;
+    --city-red: #e63946; /* لون سيتي هايبر الأساسي */
     --hyper-black: #1a1a1a;
     --bg-light: #f8f9fa;
     --white: #ffffff;
@@ -14,11 +14,11 @@ body {
     background: var(--bg-light); 
     direction: rtl;
     line-height: 1.6;
-    /* إضافة padding سفلي لضمان عدم اختفاء آخر المنتجات تحت الفوتر الثابت */
-    padding-bottom: 80px; 
+    /* مسافة سفلية لضمان عدم اختفاء المنتجات خلف الفوتر الثابت */
+    padding-bottom: 90px; 
 }
 
-/* --- الهيدر --- */
+/* --- 1. الهيدر (تصميم رشيق ومصغر) --- */
 .main-header {
     background-color: var(--city-red);
     padding: 12px 5% 45px 5%; 
@@ -34,10 +34,16 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 /* اللوجو بخلفية بيضاء دائرية */
 .logo-img {
-    width: 40px; 
-    height: 40px;
+    width: 38px; 
+    height: 38px;
     object-fit: contain;
     background-color: white;
     border-radius: 50%;
@@ -51,12 +57,18 @@ body {
     font-size: 1.3rem;
 }
 
-/* --- حقل البحث المتداخل --- */
+/* --- 2. حقل البحث (تداخل انسيابي مع الهيدر) --- */
 .search-section {
     padding: 0 5%;
     margin-top: -22px; 
     position: relative;
     z-index: 1001;
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .search-input {
@@ -69,8 +81,18 @@ body {
     outline: none;
 }
 
-/* --- البنرات --- */
-.banner-wrapper { padding: 15px; }
+.search-icon {
+    position: absolute;
+    right: 18px;
+    color: #888;
+    font-size: 1.1rem;
+}
+
+/* --- 3. البنرات الأساسية (دائرية مع تمرير يدوي) --- */
+.banner-wrapper {
+    padding: 15px; 
+}
+
 .main-banner-container {
     width: 100%;
     height: 180px;
@@ -79,62 +101,138 @@ body {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    background: #eee;
 }
+
 .main-banner-container::-webkit-scrollbar { display: none; }
+
 .banner-slide {
     min-width: 100%;
     height: 100%;
     scroll-snap-align: start;
     object-fit: cover;
     border-radius: var(--radius-lg);
+    transition: opacity 0.5s ease; 
 }
 
-/* --- المنتجات --- */
+/* --- 4. البنرات الصغيرة (نظام النصف يظهر للتشويق) --- */
+.sub-banners-container {
+    padding: 0 15px 15px 15px;
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.sub-banners-container::-webkit-scrollbar { display: none; }
+
+.sub-banner-item {
+    min-width: 75%; 
+    height: 110px;
+    border-radius: 20px;
+    object-fit: cover;
+    background: #ccc;
+    flex-shrink: 0;
+}
+
+/* --- 5. التصنيفات --- */
+.categories-wrapper {
+    padding: 10px 15px;
+}
+
+.categories-tags {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.tag-btn {
+    padding: 8px 22px;
+    background: white;
+    border: none;
+    border-radius: 50px;
+    font-weight: 700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.tag-btn.active { 
+    background: var(--city-red); 
+    color: white; 
+}
+
+/* --- 6. شبكة المنتجات (تنسيق كروت الموبايل) --- */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    padding: 10px 15px 20px;
+    padding: 10px 15px 40px;
 }
+
 .product-card {
     background: var(--white);
     border-radius: 20px;
     padding: 12px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     text-align: center;
+    border: 1px solid #f1f1f1;
 }
 
-/* --- الفوتر الثابت (Fixed Footer) --- */
+.product-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    border-radius: 15px;
+}
+
+.product-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin: 8px 0;
+    height: 2.5rem;
+    overflow: hidden;
+}
+
+.price-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: #fffafa;
+    border-radius: 10px;
+    padding: 4px;
+}
+
+.new-p { color: var(--city-red); font-weight: 900; }
+.old-p { color: #aaa; text-decoration: line-through; font-size: 0.75rem; }
+
+/* --- 7. الفوتر الثابت (Fixed Footer) --- */
 .main-footer {
-    background-color: var(--city-red); /* نفس لون الهيدر */
+    background-color: var(--city-red);
     color: white;
-    padding: 10px 15px;
+    padding: 12px 15px;
     text-align: center;
-    /* تثبيت الفوتر في الأسفل */
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
     z-index: 2000;
-    /* تصميم منحني من الأعلى */
     border-top-left-radius: 25px;
     border-top-right-radius: 25px;
     box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
 }
 
 .main-footer h3 {
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 900;
 }
 
 .main-footer p {
     margin: 2px 0;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     opacity: 0.9;
 }
 
